@@ -37,16 +37,16 @@ def calc_probabilities(brown):
     for tri in trigram_p:
         bi_tuple = tuple([tri[0],tri[1]])
         prob = 1.0*trigram_p[tri] / bigram_p[bi_tuple]
-        prob = math.log(prob)
+        prob = math.log2(prob)
         trigram_p[tri] = prob
     for bi in bigram_p:
         uni_tuple = tuple([bi[0]])
         prob = 1.0*bigram_p[bi] / unigram_p[uni_tuple]
-        prob = math.log(prob)
+        prob = math.log2(prob)
         bigram_p[bi] = prob
     for uni in unigram_p:
         prob = 1.0*unigram_p[uni] / len(unigram_p)
-        prob = math.log(prob)
+        prob = math.log2(prob)
         unigram_p[uni] = prob
 
     return unigram_p, bigram_p, trigram_p
