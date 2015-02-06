@@ -1,4 +1,5 @@
 import nltk
+import math
 #a function that calculates unigram, bigram, and trigram probabilities
 #brown is a python list of the sentences
 #this function outputs three python dictionaries, where the key is a tuple expressing the ngram and the value is the log probability of that ngram
@@ -32,7 +33,22 @@ def calc_probabilities(brown):
                 trigram_p[tri_tuple] = trigram_p[tri_tuple]+1
             else:
                 trigram_p[tri_tuple] = 1
-
+    
+    for tri in trigram_p:
+        bi_tuple = tuple([tri[0],tri[1]])
+        prob = 1.0*trigram_p / bigram_p[bi_tuple]
+        prob = math.log(prob)
+        trigram_p[tri] = prob
+    for bi in bigram_p:
+        uni_tuple = tuple([bi[0]])
+        prob = 1.0*bigram_p[bi] / unigram_p[uni_tuple]
+        prob = math.log(prob)
+        bigram_p[bi] = prob
+    for uni in unigram_p:
+        prob = 1.0*unigram_p[uni] / len(unigram_p)
+        prob = math.log(prob)
+        unigram_p[uni] = prob
+        
     return unigram_p, bigram_p, trigram_p
 
 
