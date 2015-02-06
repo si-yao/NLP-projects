@@ -1,3 +1,4 @@
+import nltk
 #a function that calculates unigram, bigram, and trigram probabilities
 #brown is a python list of the sentences
 #this function outputs three python dictionaries, where the key is a tuple expressing the ngram and the value is the log probability of that ngram
@@ -6,7 +7,34 @@ def calc_probabilities(brown):
     unigram_p = {}
     bigram_p = {}
     trigram_p = {}
+    for sent in brown:
+        tokens = nltk.word_tokenize(sent)
+        tokens = ["*"] + tokens + ["STOP"]
+        for i, tok in enumerate(tokens):
+            uni_tuple = tuple([tok])
+            if(uni_tuple in unigram_p):
+                unigram_p[uni_tuple] = unigram_p[uni_tuple]+1
+            else:
+                unigram_p[uni_tuple] = 1
+            
+            if(i >= len(tokens)-1):
+                continue
+            bi_tuple = tuple([tok, tokens[i+1]])
+            if(bi_tuple in bigram_p):
+                bigram_p[bi_tuple] = bigram_p[bi_tuple]+1
+            else:
+                bigram_p[bi_tuple] = 1
+
+            if(i >= len(tokens)-2):
+                continue
+            tri_tuple = tuple([tok, tokens[i+1],tokens[i+2]])
+            if(tri_tuple in trigram_p):
+                trigram_p[tri_tuple] = trigram_p[tri_tuple]+1
+            else:
+                trigram_p[tri_tuple] = 1
+
     return unigram_p, bigram_p, trigram_p
+
 
 #each ngram is a python dictionary where keys are a tuple expressing the ngram, and the value is the log probability of that ngram
 def q1_output(unigrams, bigrams, trigrams):
@@ -57,7 +85,7 @@ def main():
 
     #question 1 output
     q1_output(unigrams, bigrams, trigrams)
-
+'''
     #score sentences (question 2)
     uniscores = score(unigrams, 1, brown)
     biscores = score(bigrams, 2, brown)
@@ -89,5 +117,5 @@ def main():
     #question 5 output
     score_output(sample1scores, 'Sample1_scored.txt')
     score_output(sample2scores, 'Sample2_scored.txt')
-
+'''
 if __name__ == "__main__": main()
