@@ -10,7 +10,7 @@ def calc_probabilities(brown):
     trigram_p = {}
     for sent in brown:
         tokens = nltk.word_tokenize(sent)
-        #tokens = ["*"] + tokens + ["STOP"]
+        tokens = ["*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
             uni_tuple = tuple([tok])
             if(uni_tuple in unigram_p):
