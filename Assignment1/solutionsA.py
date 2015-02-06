@@ -44,8 +44,11 @@ def calc_probabilities(brown):
         prob = 1.0*bigram_p[bi] / unigram_p[uni_tuple]
         prob = math.log(prob,2)
         bigram_p[bi] = prob
+    total = 0
     for uni in unigram_p:
-        prob = 1.0*unigram_p[uni] / len(unigram_p)
+        total = total + unigram_p[uni]
+    for uni in unigram_p:
+        prob = 1.0*unigram_p[uni] / total
         prob = math.log(prob,2)
         unigram_p[uni] = prob
 
