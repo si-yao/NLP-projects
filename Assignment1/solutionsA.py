@@ -115,8 +115,8 @@ def main():
     #calculate ngram probabilities (question 1)
     unigrams, bigrams, trigrams = calc_probabilities(brown)
 
-    #question 1 output
-''' q1_output(unigrams, bigrams, trigrams) '''
+    #question 1 output##############################################
+    #q1_output(unigrams, bigrams, trigrams)
 
     #score sentences (question 2)
     uniscores = score(unigrams, 1, brown)
