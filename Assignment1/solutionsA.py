@@ -86,7 +86,7 @@ def score(ngram_p, n, data):
                 continue
             nlist = [tokens[k] for k in range(i-n+1, i+1)]
             ntuple = tuple(nlist)
-            s += ngram_p[ntuple]
+            s += ngram_p.get(ntuple,-1000)
         scores.append(s)
 
     return scores
@@ -117,9 +117,9 @@ def linearscore(unigrams, bigrams, trigrams, brown):
             tri_tuple = tuple([tokens[i-2],tokens[i-1],tokens[i]])
             bi_tuple = tuple([tokens[i-1],tokens[i]])
             uni_tuple = tuple([tokens[i]])
-            tri_p = 2.0** trigrams[tri_tuple]
-            bi_p = 2.0** bigrams[bi_tuple]
-            uni_p = 2.0** unigrams[uni_tuple]
+            tri_p = 2.0** trigrams.get(tri_tuple,-1000)
+            bi_p = 2.0** bigrams.get(bi_tuple,-1000)
+            uni_p = 2.0** unigrams(uni_tuple, -1000)
             p = lbd*(tri_p+bi_p+uni_p)
             p = math.log(p, 2)
             s += p
