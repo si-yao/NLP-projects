@@ -11,7 +11,7 @@ def calc_probabilities(brown):
     #count N-gram first, storing in unigram_p, bigram_p and trigram_p
     for sent in brown:
         tokens = nltk.word_tokenize(sent)
-        #tokens = ["*"] + tokens + ["STOP"]
+        tokens = ["*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
             uni_tuple = tuple([tok])
             if(uni_tuple in unigram_p):
@@ -78,7 +78,7 @@ def score(ngram_p, n, data):
     for sent in data:
         s = 0
         tokens = nltk.word_tokenize(sent)
-        #Should we consider the prob of start/stop symbol???
+        #Should we consider the prob of start/stop symbol???????????????????????Maybe not start syb, but should we for stop syb?
         #tokens = ["*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
             if(i < n-1):
@@ -116,8 +116,8 @@ def main():
     #calculate ngram probabilities (question 1)
     unigrams, bigrams, trigrams = calc_probabilities(brown)
 
-    #question 1 output##############################################
-    q1_output(unigrams, bigrams, trigrams)
+    #question 1 output##############################################IGNORE IT TEMP
+    #q1_output(unigrams, bigrams, trigrams)
 
     #score sentences (question 2)
     uniscores = score(unigrams, 1, brown)
