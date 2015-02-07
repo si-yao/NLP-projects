@@ -79,6 +79,7 @@ def score(ngram_p, n, data):
         s = 0
         tokens = nltk.word_tokenize(sent)
         #Should we consider the prob of start/stop symbol???????????????????????Maybe not start syb, but should we for stop syb?
+        #TA assume at least for unigram, we should ignore * and STOP. For other cases, waiting for confirm.
         #tokens = ["*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
             if(i < n-1):
@@ -104,7 +105,25 @@ def score_output(scores, filename):
 #each ngram argument is a python dictionary where the keys are tuples that express an ngram and the value is the log probability of that ngram
 #like score(), this function returns a python list of scores
 def linearscore(unigrams, bigrams, trigrams, brown):
+    lbd = 1.0/3
     scores = []
+    for sent in brown:
+        tokens = nltk.word_tokenize(sent);
+        tokens = ["*"] + tokens + ["STOP"]
+        s = 0
+        for i, tok in enumerate(tokens):
+            if(i < 2):
+                continue
+            tri_tuple = tuple([tokens[i-2],tokens[i-1],tokens[i]])
+            bi_tuple = tuple(tokens[i-1],tokens[i])
+            uni_tuple = tuple(tokens[i])
+            tri_p = 2.0** trigram_p[tri_tuple]
+            bi_p = 2.0** bigram_p[bi_tuple]
+            uni_p = 2.0** unigram_p[uni_tuple]
+            p = lbd*(tri_p+bi_p+uni_p)
+            p = math.log(p, 2)
+            s += p
+        scores.append(s)
     return scores
 
 def main():
@@ -128,7 +147,7 @@ def main():
     score_output(uniscores, 'A2.uni.txt')
     score_output(biscores, 'A2.bi.txt')
     score_output(triscores, 'A2.tri.txt')
-'''
+
     #linear interpolation (question 3)
     linearscores = linearscore(unigrams, bigrams, trigrams, brown)
 
@@ -150,5 +169,5 @@ def main():
     #question 5 output
     score_output(sample1scores, 'Sample1_scored.txt')
     score_output(sample2scores, 'Sample2_scored.txt')
-'''
+
 if __name__ == "__main__": main()
