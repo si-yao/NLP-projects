@@ -11,7 +11,7 @@ def calc_probabilities(brown):
     #count N-gram first, storing in unigram_p, bigram_p and trigram_p
     for sent in brown:
         tokens = nltk.word_tokenize(sent)
-        tokens = ["*"] + tokens + ["STOP"]
+        #tokens = ["*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
             uni_tuple = tuple([tok])
             if(uni_tuple in unigram_p):
