@@ -117,9 +117,9 @@ def linearscore(unigrams, bigrams, trigrams, brown):
             tri_tuple = tuple([tokens[i-2],tokens[i-1],tokens[i]])
             bi_tuple = tuple([tokens[i-1],tokens[i]])
             uni_tuple = tuple([tokens[i]])
-            tri_p = 2.0** trigram_p[tri_tuple]
-            bi_p = 2.0** bigram_p[bi_tuple]
-            uni_p = 2.0** unigram_p[uni_tuple]
+            tri_p = 2.0** trigrams[tri_tuple]
+            bi_p = 2.0** bigrams[bi_tuple]
+            uni_p = 2.0** unigrams[uni_tuple]
             p = lbd*(tri_p+bi_p+uni_p)
             p = math.log(p, 2)
             s += p
