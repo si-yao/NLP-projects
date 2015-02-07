@@ -1,0 +1,1 @@
+/Users/szeyiu/Documents/gitpush.sh
