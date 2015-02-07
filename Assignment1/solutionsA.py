@@ -78,7 +78,7 @@ def score(ngram_p, n, data):
     for sent in data:
         s = 0
         tokens = nltk.word_tokenize(sent)
-        tokens = ["*"] + tokens + ["STOP"]
+        #tokens = ["*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
             if(i < n-1):
                 continue
