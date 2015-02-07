@@ -78,6 +78,7 @@ def score(ngram_p, n, data):
     for sent in data:
         s = 0
         tokens = nltk.word_tokenize(sent)
+        #Should we consider the prob of start/stop symbol???
         #tokens = ["*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
             if(i < n-1):
@@ -116,7 +117,7 @@ def main():
     unigrams, bigrams, trigrams = calc_probabilities(brown)
 
     #question 1 output##############################################
-    #q1_output(unigrams, bigrams, trigrams)
+    q1_output(unigrams, bigrams, trigrams)
 
     #score sentences (question 2)
     uniscores = score(unigrams, 1, brown)
