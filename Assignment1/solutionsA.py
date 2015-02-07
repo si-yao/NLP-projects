@@ -80,6 +80,7 @@ def score(ngram_p, n, data):
         tokens = nltk.word_tokenize(sent)
         #Should we consider the prob of start/stop symbol???????????????????????Maybe not start syb, but should we for stop syb?
         #TA assume at least for unigram, we should ignore * and STOP. For other cases, waiting for confirm.
+        #SEE COMMENTS IN LINEARSCORE
         #tokens = ["*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
             if(i < n-1):
@@ -105,6 +106,13 @@ def score_output(scores, filename):
 #each ngram argument is a python dictionary where the keys are tuples that express an ngram and the value is the log probability of that ngram
 #like score(), this function returns a python list of scores
 def linearscore(unigrams, bigrams, trigrams, brown):
+    #Different with answer of TA
+    # Ex. * I am good STOP
+    # For tri-gram
+    # p1 = p(am|* I)* p(good|I am)* p(STOP|am good)
+    # or p2 = p(*)* p(I|*) * p1
+    # Which one is correct????
+    # If p2 is right,how to handle p(*)* p(I|*) for interpolation?
     lbd = 1.0/3
     scores = []
     for sent in brown:
