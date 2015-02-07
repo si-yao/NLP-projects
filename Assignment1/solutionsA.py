@@ -75,6 +75,18 @@ def q1_output(unigrams, bigrams, trigrams):
 #this function must return a python list of scores, where the first element is the score of the first sentence, etc. 
 def score(ngram_p, n, data):
     scores = []
+    for sent in data:
+        s = 0
+        tokens = nltk.word_tokenize(sent)
+        tokens = ["*"] + tokens + ["STOP"]
+        for i, tok in enumerate(tokens):
+            if(i < n-1):
+                continue
+            nlist = [tokens[k] for k in range(i-n+1, i+1)]
+            ntuple = tuple(nlist)
+            s += ngram_p[ntuple]
+        scores.append(s)
+
     return scores
 
 
@@ -104,8 +116,8 @@ def main():
     unigrams, bigrams, trigrams = calc_probabilities(brown)
 
     #question 1 output
-    q1_output(unigrams, bigrams, trigrams)
-'''
+'''    q1_output(unigrams, bigrams, trigrams) '''
+
     #score sentences (question 2)
     uniscores = score(unigrams, 1, brown)
     biscores = score(bigrams, 2, brown)
@@ -115,7 +127,7 @@ def main():
     score_output(uniscores, 'A2.uni.txt')
     score_output(biscores, 'A2.bi.txt')
     score_output(triscores, 'A2.tri.txt')
-
+'''
     #linear interpolation (question 3)
     linearscores = linearscore(unigrams, bigrams, trigrams, brown)
 
