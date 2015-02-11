@@ -9,31 +9,31 @@ def calc_probabilities(brown):
     bigram_p = {}
     trigram_p = {}
     #count N-gram first, storing in unigram_p, bigram_p and trigram_p
+    #MODIFIED VERSION TO ADD MORE *s
     for sent in brown:
         tokens = nltk.word_tokenize(sent)
-        tokens = ["*"] + tokens + ["STOP"]
+        tokens = ["*", "*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
-            uni_tuple = tuple([tok])
-            if(uni_tuple in unigram_p):
-                unigram_p[uni_tuple] = unigram_p[uni_tuple]+1
-            else:
-                unigram_p[uni_tuple] = 1
+            if(i >= 2):
+                uni_tuple = tuple([tok])
+                if(uni_tuple in unigram_p):
+                    unigram_p[uni_tuple] = unigram_p[uni_tuple]+1
+                else:
+                    unigram_p[uni_tuple] = 1
             
-            if(i >= len(tokens)-1):
-                continue
-            bi_tuple = tuple([tok, tokens[i+1]])
-            if(bi_tuple in bigram_p):
-                bigram_p[bi_tuple] = bigram_p[bi_tuple]+1
-            else:
-                bigram_p[bi_tuple] = 1
+            if(i >= 1 and i < len(tokens)-1):
+                bi_tuple = tuple([tok, tokens[i+1]])
+                if(bi_tuple in bigram_p):
+                    bigram_p[bi_tuple] = bigram_p[bi_tuple]+1
+                else:
+                    bigram_p[bi_tuple] = 1
 
-            if(i >= len(tokens)-2):
-                continue
-            tri_tuple = tuple([tok, tokens[i+1],tokens[i+2]])
-            if(tri_tuple in trigram_p):
-                trigram_p[tri_tuple] = trigram_p[tri_tuple]+1
-            else:
-                trigram_p[tri_tuple] = 1
+            if(i < len(tokens)-2):
+                tri_tuple = tuple([tok, tokens[i+1],tokens[i+2]])
+                if(tri_tuple in trigram_p):
+                    trigram_p[tri_tuple] = trigram_p[tri_tuple]+1
+                else:
+                    trigram_p[tri_tuple] = 1
     #after counting, calculate the probability according the counts.
     for tri in trigram_p:
         bi_tuple = tuple([tri[0],tri[1]])
@@ -78,16 +78,20 @@ def score(ngram_p, n, data):
     for sent in data:
         s = 0
         tokens = nltk.word_tokenize(sent)
-        #Should we consider the prob of start/stop symbol???????????????????????Maybe not start syb, but should we for stop syb?
-        #TA assume at least for unigram, we should ignore * and STOP. For other cases, waiting for confirm.
-        #SEE COMMENTS IN LINEARSCORE
-        #tokens = ["*"] + tokens + ["STOP"]
+        #! Should we consider the prob of start/stop symbol???????????????????????Maybe not start syb, but should we for stop syb?
+        #! TA assume at least for unigram, we should ignore * and STOP. For other cases, waiting for confirm.
+        #! SEE COMMENTS IN LINEARSCORE
+        tokens = ["*", "*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
-            if(i < n-1):
+            if(i < 2):
                 continue
             nlist = [tokens[k] for k in range(i-n+1, i+1)]
             ntuple = tuple(nlist)
-            s += ngram_p.get(ntuple,-1000)
+            if(ntuple in ngram_p):
+                s += ngram_p[ntuple]
+            else:   #if encounter log0, then return -1000 for this sentence
+                s = -1000
+                break
         scores.append(s)
 
     return scores
@@ -106,18 +110,18 @@ def score_output(scores, filename):
 #each ngram argument is a python dictionary where the keys are tuples that express an ngram and the value is the log probability of that ngram
 #like score(), this function returns a python list of scores
 def linearscore(unigrams, bigrams, trigrams, brown):
-    #Different with answer of TA
-    # Ex. * I am good STOP
-    # For tri-gram
-    # p1 = p(am|* I)* p(good|I am)* p(STOP|am good)
-    # or p2 = p(*)* p(I|*) * p1
-    # Which one is correct????
-    # If p2 is right,how to handle p(*)* p(I|*) for interpolation?
+    #! Different with answer of TA
+    #! Ex. * I am good STOP
+    #! For tri-gram
+    #! p1 = p(am|* I)* p(good|I am)* p(STOP|am good)
+    #! or p2 = p(*)* p(I|*) * p1
+    #! Which one is correct????
+    #! If p2 is right,how to handle p(*)* p(I|*) for interpolation?// for n-gram, there're n-1 * symbol, and 1 stop symbol, so for uni-gram, no * symbol.
     lbd = 1.0/3
     scores = []
     for sent in brown:
         tokens = nltk.word_tokenize(sent);
-        tokens = ["*"] + tokens + ["STOP"]
+        tokens = ["*", "*"] + tokens + ["STOP"]
         s = 0
         for i, tok in enumerate(tokens):
             if(i < 2):
@@ -125,6 +129,9 @@ def linearscore(unigrams, bigrams, trigrams, brown):
             tri_tuple = tuple([tokens[i-2],tokens[i-1],tokens[i]])
             bi_tuple = tuple([tokens[i-1],tokens[i]])
             uni_tuple = tuple([tokens[i]])
+            if(!(tri_p in trigrams)&&!(bi_p in bigrams)&&!(uni_p in unigrams)):#when find a new occurrence, return -1000 for the sentence.
+                s = -1000
+                break
             tri_p = 2.0** trigrams.get(tri_tuple,-1000)
             bi_p = 2.0** bigrams.get(bi_tuple,-1000)
             uni_p = 2.0** unigrams.get(uni_tuple, -1000)
@@ -143,8 +150,8 @@ def main():
     #calculate ngram probabilities (question 1)
     unigrams, bigrams, trigrams = calc_probabilities(brown)
 
-    #question 1 output##############################################IGNORE IT TEMP
-    #q1_output(unigrams, bigrams, trigrams)
+    #! question 1 output##############################################IGNORE IT TEMP
+    q1_output(unigrams, bigrams, trigrams)
 
     #score sentences (question 2)
     uniscores = score(unigrams, 1, brown)
