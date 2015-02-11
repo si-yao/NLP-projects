@@ -140,7 +140,7 @@ def linearscore(unigrams, bigrams, trigrams, brown):
             tri_tuple = tuple([tokens[i-2],tokens[i-1],tokens[i]])
             bi_tuple = tuple([tokens[i-1],tokens[i]])
             uni_tuple = tuple([tokens[i]])
-            if(not(tri_p in trigrams) and not(bi_p in bigrams)and not(uni_p in unigrams)):#when find a new occurrence, return -1000 for the sentence.
+            if(not(tri_tuple in trigrams) and not(bi_tuple in bigrams)and not(uni_tuple in unigrams)):#when find a new occurrence, return -1000 for the sentence.
                 s = -1000
                 break
             tri_p = 2.0** trigrams.get(tri_tuple,-1000)
