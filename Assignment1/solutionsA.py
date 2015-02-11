@@ -10,6 +10,7 @@ def calc_probabilities(brown):
     trigram_p = {}
     #count N-gram first, storing in unigram_p, bigram_p and trigram_p
     #MODIFIED VERSION TO ADD MORE *s
+    sentCount = len(brown);
     for sent in brown:
         tokens = nltk.word_tokenize(sent)
         tokens = ["*", "*"] + tokens + ["STOP"]
@@ -36,15 +37,25 @@ def calc_probabilities(brown):
                     trigram_p[tri_tuple] = 1
     #after counting, calculate the probability according the counts.
     for tri in trigram_p:
-        bi_tuple = tuple([tri[0],tri[1]])
-        prob = 1.0*trigram_p[tri] / bigram_p[bi_tuple]
+        if(tri[0]=="*" and tri[1]=="*"):
+            base = sentCount
+        else:
+            bi_tuple = tuple([tri[0],tri[1]])
+            base = bigram_p[bi_tuple]
+        prob = 1.0*trigram_p[tri] / base
         prob = math.log(prob,2)
         trigram_p[tri] = prob
+
     for bi in bigram_p:
-        uni_tuple = tuple([bi[0]])
-        prob = 1.0*bigram_p[bi] / unigram_p[uni_tuple]
+        if(bi[0]=="*"):
+            base = sentCount
+        else:
+            uni_tuple = tuple([bi[0]])
+            base = unigram_p[uni_tuple]
+        prob = 1.0*bigram_p[bi] / base
         prob = math.log(prob,2)
         bigram_p[bi] = prob
+        
     total = 0   #total number of words
     for uni in unigram_p:
         total = total + unigram_p[uni]
