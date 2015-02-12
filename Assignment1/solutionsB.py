@@ -32,7 +32,7 @@ def calc_trigrams(tbrown):
     biCountMap = {}
     sentCount = len(tbrown)
     for sentTags in tbrown:
-        for i, tag in sentTags:
+        for i, tag in enumerate(sentTags):
             if(i >= 1):
                 biTuple = Tuple([sentTags[i-1], sentTags[i]])
                 biCountMap[biTuple] = biCountMap.get(biTuple, 0) + 1
