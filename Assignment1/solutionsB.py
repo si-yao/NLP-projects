@@ -124,6 +124,8 @@ def split_wordtags(brown_train):
         sentTags = []
         for wordTag in wordsWithTage:
             wordTagSplit = re.split("/(?=[^/]+\Z)", wordTag)
+            if(len(wordTagSplit)<2):
+                print "ERROR!!! word/tag is: ", wordTag 
             sentWords.append(wordTagSplit[0])
             sentTags.append(wordTagSplit[1])
         wbrown.append(sentWords)
