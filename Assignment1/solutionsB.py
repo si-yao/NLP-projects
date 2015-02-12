@@ -1,7 +1,7 @@
 import sys
 import nltk
 import math
-
+import re
 #this function takes the words from the training data and returns a python list of all of the words that occur more than 5 times
 #wbrown is a python list where every element is a python list of the words of a particular sentence
 def calc_known(wbrown):
@@ -29,6 +29,24 @@ def q3_output(rare):
 #it returns a python dictionary where the keys are tuples that represent the trigram, and the values are the log probability of that trigram
 def calc_trigrams(tbrown):
     qvalues = {}
+    biCountMap = {}
+    sentCount = len(tbrown)
+    for sentTags in tbrown:
+        for i, tag in sentTags:
+            if(i >= 1):
+                biTuple = Tuple([sentTags[i-1], sentTags[i]])
+                biCountMap[biTuple] = biCountMap.get(biTuple, 0) + 1
+            if(i >= 2):
+                triTuple = Tuple([sentTags[i-2], sentTags[i-1], sentTags[i]])
+                qvalues[triTuple] = qvalues.get(triTuple, 0) + 1
+
+    for tri in qvalues:
+        if(tri[0]=="*" and tri[1]=="*"):
+            base = sentCount
+        else:
+            base = biCountMap[Tuple([tri[0],tri[1]])]
+        qvalues[tri] = math.log(qvalues[tri],2) - math.log(base,2)
+
     return qvalues
 
 #this function takes output from calc_trigrams() and outputs it in the proper format
@@ -96,8 +114,21 @@ def q6_output(tagged):
 
 #a function that returns two lists, one of the brown data (words only) and another of the brown data (tags only)
 def split_wordtags(brown_train):
+    # those 2 are list of list. each ele in it is a list containing words (or tags) of a sentence.
     wbrown = []
     tbrown = []
+    for sentence in brown_train:
+        wordsWithTage = sentence.split(" ")
+        wordsWithTage = ["*/*", "*/*"] + wordsWithTage + ["STOP/STOP"]
+        sentWords = []
+        sentTags = []
+        for wordTag in wordsWithTage:
+            wordTagSplit = re.split("/(?=[^/]+\Z)", wordTag)
+            sentWords.append(wordTagSplit[0])
+            sentTags.append(wordTagSplit[1])
+        wbrown.append(sentWords)
+        tbrown.append(sentTags)
+
     return wbrown, tbrown
 
 def main():
@@ -114,7 +145,8 @@ def main():
 
     #question 2 output
     q2_output(qvalues)
-
+    
+    '''
     #calculate list of words with count > 5 (question 3)
     knownwords = calc_known(wbrown)
 
@@ -154,4 +186,5 @@ def main():
 
     #question 6 output
     q6_output(nltk_tagged)
+    '''
 if __name__ == "__main__": main()
