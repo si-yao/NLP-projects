@@ -5,7 +5,7 @@ import re
 #this function takes the words from the training data and returns a python list of all of the words that occur more than 5 times
 #wbrown is a python list where every element is a python list of the words of a particular sentence
 def calc_known(wbrown):
-    knownwords = Set([])
+    knownwords = set()
     wordCountMap = {}
     for sentWords in wbrown:
         for word in sentWords:
