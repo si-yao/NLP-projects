@@ -47,6 +47,7 @@ def calc_trigrams(tbrown):
             base = biCountMap[Tuple([tri[0],tri[1]])]
         qvalues[tri] = math.log(qvalues[tri],2) - math.log(base,2)
 
+    del biCountMap
     return qvalues
 
 #this function takes output from calc_trigrams() and outputs it in the proper format
@@ -123,10 +124,9 @@ def split_wordtags(brown_train):
         sentWords = []
         sentTags = []
         for wordTag in wordsWithTage:
+            if(wordTag == ""):
+                continue
             wordTagSplit = re.split("/(?=[^/]+\Z)", wordTag)
-            if(len(wordTagSplit)<2):
-                print "ERROR!!! word/tag is: ", wordTag 
-                print "sentence is: ", sentence
             sentWords.append(wordTagSplit[0])
             sentTags.append(wordTagSplit[1])
         wbrown.append(sentWords)
