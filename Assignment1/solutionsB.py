@@ -5,8 +5,15 @@ import re
 #this function takes the words from the training data and returns a python list of all of the words that occur more than 5 times
 #wbrown is a python list where every element is a python list of the words of a particular sentence
 def calc_known(wbrown):
-    knownwords = []
-
+    knownwords = Set([])
+    wordCountMap = {}
+    for sentWords in wbrown:
+        for word in sentWords:
+            wordCountMap[word] = wordCountMap.get(word, 0) + 1
+    for w in wordCountMap:
+        if(wordCountMap[w] > 5):
+            knownwords.add(w)
+    del wordCountMap
     return knownwords
 
 #this function takes a set of sentences and a set of words that should not be marked '_RARE_'
@@ -14,6 +21,14 @@ def calc_known(wbrown):
 #and outputs a version of the set of sentences with rare words marked '_RARE_'
 def replace_rare(brown, knownwords):
     rare = []
+    for sentWords in brown:
+        sentence = []
+        for word in sentWords:
+            if(word in knownwords):
+                sentence.append(word)
+            else:
+                sentence.append("_RARE_")
+        rare.append(sentence)
     return rare
 
 #this function takes the ouput from replace_rare and outputs it
@@ -150,8 +165,8 @@ def main():
     #question 2 output
     q2_output(qvalues)
     
-    '''
-    #calculate list of words with count > 5 (question 3)
+    
+    #calculate SET of words with count > 5 (question 3)
     knownwords = calc_known(wbrown)
 
     #get a version of wbrown with rare words replace with '_RARE_' (question 3)
@@ -159,7 +174,7 @@ def main():
 
     #question 3 output
     q3_output(wbrown_rare)
-
+    '''
     #calculate emission probabilities (question 4)
     evalues, taglist = calc_emission(wbrown_rare, tbrown)
 
