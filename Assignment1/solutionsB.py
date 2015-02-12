@@ -119,18 +119,20 @@ def split_wordtags(brown_train):
     wbrown = []
     tbrown = []
     for sentence in brown_train:
-        wordsWithTage = sentence.split(" ")
-        wordsWithTage = ["*/*", "*/*"] + wordsWithTage + ["STOP/STOP"]
+        wordsWithTag = sentence.split(" ")
+        wordsWithTag = ["*/*", "*/*"] + wordsWithTag + ["STOP/STOP"]
         sentWords = []
         sentTags = []
-        for wordTag in wordsWithTage:
+        print wordsWithTag
+        for wordTag in wordsWithTag:
+            print wordTag
             if(wordTag == ""):
                 continue
             wordTagSplit = re.split("/(?=[^/]+\Z)", wordTag)
             if(len(wordTagSplit)<2):
                 print "Error: word/tag is:", wordTag
                 print "sentence is:", sentence
-                
+
             sentWords.append(wordTagSplit[0])
             sentTags.append(wordTagSplit[1])
         wbrown.append(sentWords)
