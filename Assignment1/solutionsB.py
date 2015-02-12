@@ -34,17 +34,17 @@ def calc_trigrams(tbrown):
     for sentTags in tbrown:
         for i, tag in enumerate(sentTags):
             if(i >= 1):
-                biTuple = Tuple([sentTags[i-1], sentTags[i]])
+                biTuple = tuple([sentTags[i-1], sentTags[i]])
                 biCountMap[biTuple] = biCountMap.get(biTuple, 0) + 1
             if(i >= 2):
-                triTuple = Tuple([sentTags[i-2], sentTags[i-1], sentTags[i]])
+                triTuple = tuple([sentTags[i-2], sentTags[i-1], sentTags[i]])
                 qvalues[triTuple] = qvalues.get(triTuple, 0) + 1
 
     for tri in qvalues:
         if(tri[0]=="*" and tri[1]=="*"):
             base = sentCount
         else:
-            base = biCountMap[Tuple([tri[0],tri[1]])]
+            base = biCountMap[tuple([tri[0],tri[1]])]
         qvalues[tri] = math.log(qvalues[tri],2) - math.log(base,2)
 
     del biCountMap
