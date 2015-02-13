@@ -149,7 +149,7 @@ def viterbilet(sentWords, taglist, qvalues, evalues):
         for j in range(0,m):# index of current tag for this word
             tag = taglist[j]# current tag
             for k in range(0,m):# index of tag 1 behind
-                maxi = -1000000000
+                maxi = -100000000000000
                 maxtag = 0
                 for kk in range(0,m):# index of tag 2 behind
                     tri_tuple = tuple([taglist[kk], taglist[k], taglist[j]])
@@ -159,7 +159,7 @@ def viterbilet(sentWords, taglist, qvalues, evalues):
                         maxtag = kk
                 A[j][i][k] = maxi
                 D[j][i][k] = maxtag
-    curmax = -1000000000
+    curmax = -100000000000000
     curmaxI = 0
     prevI = 0
     # for the last word, find the best 1 behind tag, and best 2 behind tag
