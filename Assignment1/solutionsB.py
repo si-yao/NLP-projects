@@ -159,6 +159,7 @@ def viterbilet(sentWords, taglist, qvalues, evalues):
                         tri_tuple = tuple(["*", taglist[k], taglist[j]])
 
                     cur = A[k][i-1][kk] + qvalues.get(tri_tuple, -1000) + evalues.get(tuple([word, tag]), -1000)
+                    print qvalues.get(tri_tuple, -1000), evalues.get(tuple([word, tag]), -1000)
                     if(cur > maxi):
                         maxi = cur
                         maxtag = kk
