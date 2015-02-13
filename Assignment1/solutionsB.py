@@ -128,6 +128,7 @@ def viterbi(brown, taglist, knownwords, qvalues, evalues):
 
 
 def viterbilet(sentWords, taglist, qvalues, evalues):
+    print "TAGLIST:", taglist
     taggedWords = []
     m = len(taglist) # number of tags
     n = len(sentWords) # number of words
