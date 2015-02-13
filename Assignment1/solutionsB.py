@@ -121,6 +121,8 @@ def viterbi(brown, taglist, knownwords, qvalues, evalues):
     tagged = []
     for sentWords in brown:
         taggedWords = viterbilet(sentWords, taglist, qvalues, evalues)
+        print "taggedWords:"
+        print taggedWords
         tagged.append(taggedWords)
     return tagged
 
