@@ -119,7 +119,75 @@ def q4_output(evalues):
 #tagged is a list of tagged sentences in the format "WORD/TAG". Each sentence is a string with a terminal newline, not a list of tokens.
 def viterbi(brown, taglist, knownwords, qvalues, evalues):
     tagged = []
+    for sentWords in brown:
+        taggedWords = viterbilet(sentWords, taglist, qvalues, evalues)
+        tagged.append(taggedWords)
     return tagged
+
+
+def viterbilet(sentWords, taglist, qvalues, evalues):
+    taggedWords = []
+    m = len(taglist) # number of tags
+    n = len(sentWords) # number of words
+    #3D array with dimension m*n*m
+    #A is the DP array storing the best trigram prob.
+    #A[j][i][k] represents:
+    #for the i-th word, if the tag is tag[j], and previous word is tag[k], 
+    #then the best prob now for [anyBestTags],word[i-1]/tag[k],word[i]/tag[j] is A[j][i][k]
+    #and D[j][i][k] indicates the best tag for word[i-2], the tag 2 behind i-th word
+    A = m*[n*[m*[0]]] 
+    D = m*[n*[m*[0]]]
+    for i, word in sentWords:# each word
+        if(i < 2):
+            for j in range(0,m):
+                for k in range(0,m):
+                    A[j][i][k] = 0
+            continue
+
+        for j in range(0,m):# index of current tag for this word
+            tag = taglist[j]# current tag
+            for k in range(0,m):# index of tag 1 behind
+                maxi = -1000000000
+                maxtag = 0
+                for kk in range(0,m):# index of tag 2 behind
+                    tri_tuple = tuple([taglist[kk], taglist[k], taglist[j]])
+                    cur = A[k][i-1][kk] + qvalues.get(tri_tuple,-1000) + evalues.get(tuple([tag, word]),-1000)
+                    if(cur > maxi):
+                        maxi = cur
+                        maxtag = kk
+                A[j][i][k] = maxi
+                D[j][i][k] = kk
+    curmax = -1000000000
+    curmaxI = 0
+    prevI = 0
+    # for the last word, find the best 1 behind tag, and best 2 behind tag
+    for j in range(0,m):
+        for k in range(0,m):
+            if(A[j][n-1][k] > curmax):
+                curmaxI = j
+                prevI = k
+    
+    revTagList = [taglist(curmaxI), taglist(prevI)]
+    #for each loop, using curmaxI and prevI, we could find the previous 1 best tag.
+    for i in range(n-1,3,-1):
+        tmp = D[curmaxI][i][prevI]
+        curmaxI = prevI
+        prevI = tmp
+        revTagList.append(taglist(tmp))
+
+    #at beginning, there are 2 *
+    revTagList.append("*")
+    revTagList.append("*")
+    revTagList.reverse()
+
+    #form the tagwords
+    for i, word in sentWords:
+        taggedWords.append(word+"/"+revTagList[i])
+    del A
+    del D
+    return taggedWords
+
+
 
 #this function takes the output of viterbi() and outputs it
 def q5_output(tagged):
@@ -163,6 +231,20 @@ def split_wordtags(brown_train):
 
     return wbrown, tbrown
 
+#Format sentences, and tag rare words as _RARE_.
+#Returns list of list. each ele in the return list is a list of words in one line.
+def formatDev(brown_dev, knownwords):
+    brown_rst = []
+    for sent in brown_dev:
+        sentWords = nltk.word_tokenize(sent)
+        sentWords = ["*", "*"] + sentWords + ["STOP"]
+        for i, word in enumerate(sentWords):
+            if(not(word in knownwords)):
+                sentWords[i] = "_RARE_"
+        brown_rst.append(sentWords)
+    return brown_rst
+
+
 def main():
     #open Brown training data
     infile = open("Brown_tagged_train.txt", "r")
@@ -199,20 +281,21 @@ def main():
     del wbrown
     del tbrown
     del wbrown_rare
-    '''
+    
     #open Brown development data (question 5)
     infile = open("Brown_dev.txt", "r")
     brown_dev = infile.readlines()
     infile.close()
 
     #format Brown development data here
+    brown_dev = formatDev(brown_dev, knownwords)
 
     #do viterbi on brown_dev (question 5)
     viterbi_tagged = viterbi(brown_dev, taglist, knownwords, qvalues, evalues)
 
     #question 5 output
     q5_output(viterbi_tagged)
-
+    '''
     #do nltk tagging here
     nltk_tagged = nltk_tagger(brown_dev)
 
