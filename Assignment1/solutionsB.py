@@ -275,7 +275,7 @@ def formatDev(brown_dev):
 
 def main():
     #open Brown training data
-    '''
+    
     infile = open("Brown_tagged_train.txt", "r")
     brown_train = infile.readlines()
     infile.close()
@@ -310,7 +310,7 @@ def main():
     del wbrown
     del tbrown
     del wbrown_rare
-    '''
+    
     #open Brown development data (question 5)
     infile = open("Brown_dev.txt", "r")
     brown_dev = infile.readlines()
@@ -320,10 +320,10 @@ def main():
     brown_dev = formatDev(brown_dev)
 
     #do viterbi on brown_dev (question 5)
-    #viterbi_tagged = viterbi(brown_dev, taglist, knownwords, qvalues, evalues)
+    viterbi_tagged = viterbi(brown_dev, taglist, knownwords, qvalues, evalues)
 
     #question 5 output
-    #q5_output(viterbi_tagged)
+    q5_output(viterbi_tagged)
     
     #do nltk tagging here
     nltk_tagged = nltk_tagger(brown_dev)
