@@ -220,12 +220,23 @@ def q5_output(tagged):
 #tagged is a list of tagged sentences the WORD/TAG format. Each sentence is a string with a terminal newline rather than a list of tokens.
 def nltk_tagger(brown):
     tagged = []
+    from nltk.corpus import brown
+    train = brown.tagged_sents(categories='news', tagset='universal')
+    def_tagger = nltk.DefaultTagger('NN')
+    uni_tagger = nltk.UnigramTagger(train, backoff=def_tagger)
+    bi_tagger = nltk.BigramTagger(train, backoff=uni_tagger)
+    tri_tagger = nltk.TrigramTagger(train, backoff=bi_tagger)
+
+    for tokens in brown:
+        wordTags = tri_tagger.tag(tokens)
+        tagged.append(" ".join(wordTags))
     return tagged
 
 def q6_output(tagged):
     outfile = open('B6.txt', 'w')
     for sentence in tagged:
         outfile.write(output)
+        outfile.write("\n")
     outfile.close()
 
 #a function that returns two lists, one of the brown data (words only) and another of the brown data (tags only)
@@ -310,11 +321,11 @@ def main():
 
     #question 5 output
     q5_output(viterbi_tagged)
-    '''
+    
     #do nltk tagging here
     nltk_tagged = nltk_tagger(brown_dev)
 
     #question 6 output
     q6_output(nltk_tagged)
-    '''
+    
 if __name__ == "__main__": main()
