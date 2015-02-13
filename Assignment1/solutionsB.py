@@ -223,8 +223,7 @@ def nltk_tagger(brown):
     from nltk.corpus import brown as bwn
     train = bwn.tagged_sents(tagset='universal')
     def_tagger = nltk.DefaultTagger('NOUN')
-    uni_tagger = nltk.UnigramTagger(train, backoff=def_tagger)
-    bi_tagger = nltk.BigramTagger(train, backoff=uni_tagger)
+    bi_tagger = nltk.BigramTagger(train, backoff=def_tagger)
     tri_tagger = nltk.TrigramTagger(train, backoff=bi_tagger)
     #print "The input brown is:"
     #print brown
