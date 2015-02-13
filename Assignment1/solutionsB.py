@@ -228,6 +228,7 @@ def nltk_tagger(brown):
     tri_tagger = nltk.TrigramTagger(train, backoff=bi_tagger)
 
     for tokens in brown:
+        print tokens
         wordTags = tri_tagger.tag(tokens)
         tagged.append(" ".join(wordTags))
     return tagged
