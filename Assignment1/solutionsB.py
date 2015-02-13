@@ -158,7 +158,7 @@ def viterbilet(sentWords, taglist, qvalues, evalues):
                         maxi = cur
                         maxtag = kk
                 A[j][i][k] = maxi
-                D[j][i][k] = kk
+                D[j][i][k] = maxtag
     curmax = -1000000000
     curmaxI = 0
     prevI = 0
