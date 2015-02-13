@@ -226,9 +226,9 @@ def nltk_tagger(brown):
     uni_tagger = nltk.UnigramTagger(train, backoff=def_tagger)
     bi_tagger = nltk.BigramTagger(train, backoff=uni_tagger)
     tri_tagger = nltk.TrigramTagger(train, backoff=bi_tagger)
-
+    print brown
     for tokens in brown:
-        print tokens
+        #print tokens
         wordTags = tri_tagger.tag(tokens)
         tagged.append(" ".join(wordTags))
     return tagged
