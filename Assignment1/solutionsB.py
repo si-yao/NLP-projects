@@ -137,7 +137,7 @@ def viterbilet(sentWords, taglist, qvalues, evalues):
     #and D[j][i][k] indicates the best tag for word[i-2], the tag 2 behind i-th word
     A = m*[n*[m*[0]]] 
     D = m*[n*[m*[0]]]
-    for i, word in sentWords:# each word
+    for i, word in enumerate(sentWords):# each word
         if(i < 2):
             for j in range(0,m):
                 for k in range(0,m):
