@@ -168,7 +168,7 @@ def viterbilet(sentWords, taglist, qvalues, evalues):
             if(A[j][n-1][k] > curmax):
                 curmaxI = j
                 prevI = k
-    
+    print D
     revTagList = [taglist[curmaxI], taglist[prevI]]
     #for each loop, using curmaxI and prevI, we could find the previous 1 best tag.
     for i in range(n-1,3,-1):
