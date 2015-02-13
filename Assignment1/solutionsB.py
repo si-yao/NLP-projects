@@ -146,7 +146,7 @@ def viterbilet(sentWords, taglist, qvalues, evalues):
                 for k in range(0,m):
                     A[j][i][k] = 0
             continue
-
+        print A[0]
         for j in range(0,m):# index of current tag for this word
             tag = taglist[j]# current tag
             for k in range(0,m):# index of tag 1 behind
