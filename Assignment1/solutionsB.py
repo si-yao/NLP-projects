@@ -126,8 +126,8 @@ def viterbi(brown, taglist, knownwords, qvalues, evalues):
             if(not(w in knownwords)):
                 sentWords[i] = "_RARE_"
         taggedWords = viterbilet(sentWords, sentWords_raw, taglist, qvalues, evalues)
-        tagged.append(taggedWords[2:-1])
-        #print tagged
+        tagged.append(" ".join(taggedWords[2:-1]))
+        print tagged
     return tagged
 
 
