@@ -127,7 +127,7 @@ def viterbi(brown, taglist, knownwords, qvalues, evalues):
                 sentWords[i] = "_RARE_"
         taggedWords = viterbilet(sentWords, sentWords_raw, taglist, qvalues, evalues)
         tagged.append(" ".join(taggedWords[2:-1]))
-        print tagged
+        #print tagged
     return tagged
 
 
@@ -212,6 +212,7 @@ def q5_output(tagged):
     outfile = open('B5.txt', 'w')
     for sentence in tagged:
         outfile.write(sentence)
+        outfile.write("\n")
     outfile.close()
 
 #this function uses nltk to create the taggers described in question 6
