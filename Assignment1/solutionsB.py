@@ -181,7 +181,7 @@ def viterbilet(sentWords, taglist, qvalues, evalues):
     revTagList.reverse()
 
     #form the tagwords
-    for i, word in sentWords:
+    for i, word in enumerate(sentWord)s:
         taggedWords.append(word+"/"+revTagList[i])
     del A
     del D
