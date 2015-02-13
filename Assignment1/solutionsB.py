@@ -121,8 +121,8 @@ def viterbi(brown, taglist, knownwords, qvalues, evalues):
     tagged = []
     for sentWords in brown:
         taggedWords = viterbilet(sentWords, taglist, qvalues, evalues)
-        #print "taggedWords:"
-        #print taggedWords
+        print "taggedWords:"
+        print taggedWords
         tagged.append(taggedWords)
     return tagged
 
@@ -153,7 +153,7 @@ def viterbilet(sentWords, taglist, qvalues, evalues):
                 maxtag = 0
                 for kk in range(0,m):# index of tag 2 behind
                     tri_tuple = tuple([taglist[kk], taglist[k], taglist[j]])
-                    cur = A[k][i-1][kk] + qvalues.get(tri_tuple,-1000) + evalues.get(tuple([tag, word]),-1000)
+                    cur = A[k][i-1][kk] + qvalues.get(tri_tuple,-1000) + evalues.get(tuple([word, tag]),-1000)
                     if(cur > maxi):
                         maxi = cur
                         maxtag = kk
@@ -168,7 +168,7 @@ def viterbilet(sentWords, taglist, qvalues, evalues):
             if(A[j][n-1][k] > curmax):
                 curmaxI = j
                 prevI = k
-    print A
+    #print A
     revTagList = [taglist[curmaxI], taglist[prevI]]
     #for each loop, using curmaxI and prevI, we could find the previous 1 best tag.
     for i in range(n-1,3,-1):
