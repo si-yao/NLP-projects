@@ -74,7 +74,7 @@ def q2_output(qvalues):
         outfile.write(output + '\n')
     outfile.close()
 
-#this function calculates emission probabilities and creates a list of possible tags
+#this function calculates emission probabilities and creates a list (ok for list) of possible tags
 #the first return value is a python dictionary where each key is a tuple in which the first element is a word
 #and the second is a tag and the value is the log probability of that word/tag pair
 #and the second return value is a list of possible tags for this data set
@@ -83,6 +83,19 @@ def q2_output(qvalues):
 def calc_emission(wbrown, tbrown):
     evalues = {}
     taglist = []
+    tagCountMap = {}
+    for i, sentWords in enumerate(wbrown):
+        for j, word in enumerate(sentWords):
+            tag = tbrown[i][j]
+            wt_tuple = tuple([word, tag])
+            evalues[wt_tuple] = evalues.get(wt_tuple, 0) + 1
+            tagCountMap[tag] = tagCountMap.get(tag, 0) + 1
+    for wt in evalues:
+        tag = wt[1]
+        evalues[wt] = math.log(evalues[wt],2) - math.log(tagCountMap[tag],2)
+    for tag in tagCountMap:
+        taglist.append(tag)
+
     return evalues, taglist
 
 #this function takes the output from calc_emissions() and outputs it
@@ -174,7 +187,7 @@ def main():
 
     #question 3 output
     q3_output(wbrown_rare)
-    '''
+    
     #calculate emission probabilities (question 4)
     evalues, taglist = calc_emission(wbrown_rare, tbrown)
 
@@ -186,7 +199,7 @@ def main():
     del wbrown
     del tbrown
     del wbrown_rare
-
+    '''
     #open Brown development data (question 5)
     infile = open("Brown_dev.txt", "r")
     brown_dev = infile.readlines()
