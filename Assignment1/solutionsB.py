@@ -126,11 +126,13 @@ def viterbi(brown, taglist, knownwords, qvalues, evalues):
             if(not(w in knownwords)):
                 sentWords[i] = "_RARE_"
         taggedWords = viterbilet(sentWords, sentWords_raw, taglist, qvalues, evalues)
-        tagged.append(" ".join(taggedWords[2:-1]))
+        tagged.append(" ".join(taggedWords[2:-1]))#ignore the * * and STOP
         #print tagged
     return tagged
 
-
+#viterbilet is a unit for processing a sentence by viterbi algorithm.
+#sentWords is a list of words of 1 sentence, with * * and STOP, and with RARE replaced.
+#sentWords_raw is same list of words of the sentence,but preserve the original words instead of RARE tag.
 def viterbilet(sentWords, sentWords_raw, taglist, qvalues, evalues):
     #print "TAGLIST:", taglist
     taggedWords = []
@@ -153,7 +155,7 @@ def viterbilet(sentWords, sentWords_raw, taglist, qvalues, evalues):
         for j in range(0,m):# index of current tag for this word
             tag = taglist[j]# current tag
             for k in range(0,m):# index of tag 1 behind
-                maxi = -100000000000000
+                maxi = -100000000000000 #init with some very small number
                 maxtag = 0
                 for kk in range(0,m):# index of tag 2 behind
                     tri_tuple = tuple([taglist[kk], taglist[k], taglist[j]])
@@ -263,7 +265,7 @@ def split_wordtags(brown_train):
 
     return wbrown, tbrown
 
-#Format sentences, and tag rare words as _RARE_.
+
 #Returns list of list. each ele in the return list is a list of words in one line.
 def formatDev(brown_dev):
     brown_rst = []

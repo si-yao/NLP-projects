@@ -89,12 +89,9 @@ def score(ngram_p, n, data):
     for sent in data:
         s = 0
         tokens = nltk.word_tokenize(sent)
-        #! Should we consider the prob of start/stop symbol???????????????????????Maybe not start syb, but should we for stop syb?
-        #! TA assume at least for unigram, we should ignore * and STOP. For other cases, waiting for confirm.
-        #! SEE COMMENTS IN LINEARSCORE
         tokens = ["*", "*"] + tokens + ["STOP"]
         for i, tok in enumerate(tokens):
-            if(i < 2):
+            if(i < 2):#only start at the first word
                 continue
             nlist = [tokens[k] for k in range(i-n+1, i+1)]
             ntuple = tuple(nlist)
@@ -121,13 +118,9 @@ def score_output(scores, filename):
 #each ngram argument is a python dictionary where the keys are tuples that express an ngram and the value is the log probability of that ngram
 #like score(), this function returns a python list of scores
 def linearscore(unigrams, bigrams, trigrams, brown):
-    #! Different with answer of TA
-    #! Ex. * I am good STOP
-    #! For tri-gram
-    #! p1 = p(am|* I)* p(good|I am)* p(STOP|am good)
-    #! or p2 = p(*)* p(I|*) * p1
-    #! Which one is correct????
-    #! If p2 is right,how to handle p(*)* p(I|*) for interpolation?// for n-gram, there're n-1 * symbol, and 1 stop symbol, so for uni-gram, no * symbol.
+    # Ex. * * I am good STOP
+    # For tri-gram
+    # p1 = p(I|* *)* p(am|* I)* p(good|I am)* p(STOP|am good)
     lbd = 1.0/3
     scores = []
     for sent in brown:
@@ -161,7 +154,7 @@ def main():
     #calculate ngram probabilities (question 1)
     unigrams, bigrams, trigrams = calc_probabilities(brown)
 
-    #! question 1 output##############################################IGNORE IT TEMP
+    #! question 1 output
     q1_output(unigrams, bigrams, trigrams)
 
     #score sentences (question 2)
