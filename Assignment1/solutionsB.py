@@ -134,7 +134,7 @@ def viterbi(brown, taglist, knownwords, qvalues, evalues):
 #sentWords is a list of words of 1 sentence, with * * and STOP, and with RARE replaced.
 #sentWords_raw is same list of words of the sentence,but preserve the original words instead of RARE tag.
 def viterbilet(sentWords, sentWords_raw, taglist, qvalues, evalues):
-    #print "TAGLIST:", taglist
+    print "TAGLIST:", taglist
     taggedWords = []
     m = len(taglist) # number of tags
     n = len(sentWords) # number of words
@@ -183,7 +183,8 @@ def viterbilet(sentWords, sentWords_raw, taglist, qvalues, evalues):
 		curmax = A[j][n-2][k]+qvalues.get(tri_tuple, -1000)
                 curmaxI = j
                 prevI = k
-    #print A
+    print D
+    input('pause')
     revTagList = ["STOP", taglist[curmaxI], taglist[prevI]]
     #for each loop, using curmaxI and prevI, we could find the previous 1 best tag.
     for i in range(n-2,3,-1):
