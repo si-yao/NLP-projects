@@ -18,7 +18,7 @@ class Transition(object):
             :param configuration: is the current configuration
             :return : A new configuration or -1 if the pre-condition is not satisfied
         """
-
+        #raise NotImplementedError('Please implement left_arc!')
         idx_wi = conf.stack[-1]
         idx_wj = conf.buffer[0]
         if(idx_wi==0):
