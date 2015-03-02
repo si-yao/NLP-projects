@@ -72,36 +72,51 @@ class FeatureExtractor(object):
             token = tokens[stack_idx0]
             if FeatureExtractor._check_informative(token['word'], True):
                 result.append('STK_0_FORM_' + token['word'])
+            else:
+                result.append('STK_0_FORM_NULL')
 
-            if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
-                feats = token['feats'].split("|")
-                for feat in feats:
-                    result.append('STK_0_FEATS_' + feat)
+            #if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
+            #    feats = token['feats'].split("|")
+            #    for feat in feats:
+            #        result.append('STK_0_FEATS_' + feat)
 
             # Left most, right most dependency of stack[0]
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(stack_idx0, arcs)
 
             if FeatureExtractor._check_informative(dep_left_most):
                 result.append('STK_0_LDEP_' + dep_left_most)
+            else:
+                result.append('STK_0_LDEP_NULL')
             if FeatureExtractor._check_informative(dep_right_most):
                 result.append('STK_0_RDEP_' + dep_right_most)
+            else:
+                result.append('STK_0_RDEP_NULL')
+        else:
+            result.append('STK_0_FORM_NULL').append('STK_0_LDEP_NULL').append('STK_0_RDEP_NULL')
 
         if buffer:
             buffer_idx0 = buffer[0]
             token = tokens[buffer_idx0]
             if FeatureExtractor._check_informative(token['word'], True):
                 result.append('BUF_0_FORM_' + token['word'])
+            else:
+                result.append('BUF_0_FORM_NULL')
 
-            if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
-                feats = token['feats'].split("|")
-                for feat in feats:
-                    result.append('BUF_0_FEATS_' + feat)
+            #if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
+            #    feats = token['feats'].split("|")
+            #    for feat in feats:
+            #        result.append('BUF_0_FEATS_' + feat)
 
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(buffer_idx0, arcs)
 
             if FeatureExtractor._check_informative(dep_left_most):
                 result.append('BUF_0_LDEP_' + dep_left_most)
+            else:
+                result.append('BUF_0_LDEP_NULL')
             if FeatureExtractor._check_informative(dep_right_most):
-                result.append('BUF_0_RDEP_' + dep_right_most)
+                result.append('BUF_0_RDEP_NULL')
+                
+        else:
+            result.append('BUF_0_FORM_NULL').append('BUF_0_LDEP_NULL').append('BUF_0_RDEP_NULL')
 
         return result
