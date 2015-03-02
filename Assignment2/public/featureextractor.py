@@ -178,13 +178,13 @@ class FeatureExtractor(object):
                 token = tokens[buffer_idx1]
                 if FeatureExtractor._check_informative(token['word'], True):
                     buf1Form = token['word']
-            result.append('STK_0_FORM'+stk0Form)
-            result.append('STK_0_LDEP'+stk0Ldep)
-            result.append('STK_0_RDEP'+stk0Rdep)
-            result.append('BUF_0_FORM'+buf0Form)
-            result.append('BUF_0_LDEP'+buf0Ldep)
-            result.append('BUF_0_RDEP'+buf0Rdep)
-            result.append('BUF_1_FORM'+buf1Form)
+            result.append('STK_0_FORM_'+stk0Form)
+            result.append('STK_0_LDEP_'+stk0Ldep)
+            result.append('STK_0_RDEP_'+stk0Rdep)
+            result.append('BUF_0_FORM_'+buf0Form)
+            result.append('BUF_0_LDEP_'+buf0Ldep)
+            result.append('BUF_0_RDEP_'+buf0Rdep)
+            result.append('BUF_1_FORM_'+buf1Form)
         return result
 
     @staticmethod
@@ -232,6 +232,8 @@ class FeatureExtractor(object):
                 stk0Form = token['word']
             if FeatureExtractor._check_informative(token['lemma'], True):
                 stk0Lemma = token['lemma']
+            if FeatureExtractor._check_informative(token['tag'], True):
+                stk0Postag = token['tag']
 
 
             # Left most, right most dependency of stack[0]
@@ -247,6 +249,10 @@ class FeatureExtractor(object):
             token = tokens[buffer_idx0]
             if FeatureExtractor._check_informative(token['word'], True):
                 buf0Form = token['word']
+            if FeatureExtractor._check_informative(token['lemma'], True):
+                buf0Lemma = token['lemma']
+            if FeatureExtractor._check_informative(token['tag'], True):
+                buf0Postag = token['tag']
 
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(buffer_idx0, arcs)
 
@@ -259,11 +265,32 @@ class FeatureExtractor(object):
                 token = tokens[buffer_idx1]
                 if FeatureExtractor._check_informative(token['word'], True):
                     buf1Form = token['word']
-            result.append('STK_0_FORM'+stk0Form)
-            result.append('STK_0_LDEP'+stk0Ldep)
-            result.append('STK_0_RDEP'+stk0Rdep)
-            result.append('BUF_0_FORM'+buf0Form)
-            result.append('BUF_0_LDEP'+buf0Ldep)
-            result.append('BUF_0_RDEP'+buf0Rdep)
-            result.append('BUF_1_FORM'+buf1Form)
+                if FeatureExtractor._check_informative(token['tag'], True):
+                    buf1Postag = token['tag']
+            if len(buffer) > 2:
+                token = tokens[buffer[2]]
+                if FeatureExtractor._check_informative(token['tag'], True):
+                    buf2Postag = token['tag']
+            if len(buffer) > 3:
+                token = tokens[buffer[3]]
+                if FeatureExtractor._check_informative(token['tag'], True):
+                    buf3Postag = token['tag']
+
+            result.append('STK_0_FORM_'+stk0Form)
+            result.append('STK_0_LDEP_'+stk0Ldep)
+            result.append('STK_0_RDEP_'+stk0Rdep)
+            result.append('STK_0_LEMMA_'+stk0Lemma)
+            result.append('STK_0_TAG_'+stk0Postag)
+            result.append('STK_1_TAG_'+stk1Postag)
+
+            result.append('BUF_0_FORM_'+buf0Form)
+            result.append('BUF_0_LDEP_'+buf0Ldep)
+            result.append('BUF_0_RDEP_'+buf0Rdep)
+            result.append('BUF_0_LEMMA_'+buf0Lemma)
+            result.append('BUF_0_TAG_'+buf0Postag)
+
+            result.append('BUF_1_TAG_'+buf1Postag)
+            result.append('BUF_1_FORM_'+buf1Form)
+            result.append('BUF_2_TAG_'+buf2Postag)
+            result.append('BUF_3_TAG_'+buf3Postag)
         return result
