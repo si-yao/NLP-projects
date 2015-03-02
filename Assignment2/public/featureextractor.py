@@ -174,8 +174,11 @@ class FeatureExtractor(object):
                 token = tokens[buffer_idx1]
                 if FeatureExtractor._check_informative(token['word'], True):
                     buf1Form = token['word']
-
-            result.append('STK_0_FORM'+stk0Form).append('STK_0_LDEP'+stk0Ldep).append('STK_0_RDEP'+stk0Rdep).append('BUF_0_FORM'+buf0Form)
-            result.append('BUF_0_LDEP'+buf0Ldep).append('BUF_0_RDEP'+buf0Rdep).append('BUF_1_FORM'+buf1Form)
-
+            result.append('STK_0_FORM'+stk0Form)
+            result.append('STK_0_LDEP'+stk0Ldep)
+            result.append('STK_0_RDEP'+stk0Rdep)
+            result.append('BUF_0_FORM'+buf0Form)
+            result.append('BUF_0_LDEP'+buf0Ldep)
+            result.append('BUF_0_RDEP'+buf0Rdep)
+            result.append('BUF_1_FORM'+buf1Form)
         return result
