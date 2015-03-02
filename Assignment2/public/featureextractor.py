@@ -213,7 +213,7 @@ class FeatureExtractor(object):
 
         global printed
         if not printed:
-            print("This is 1st feature extractor!")
+            print("This is 2nd feature extractor!")
             printed = True
 
         #features I use
