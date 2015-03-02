@@ -11,12 +11,12 @@ if __name__ == '__main__':
     subdata = random.sample(data, 200)
 
     try:
-        # tp = TransitionParser(Transition, FeatureExtractor)
-        # tp.train(subdata)
-        # tp.save('swedish.model')
+        tp = TransitionParser(Transition, FeatureExtractor)
+        tp.train(subdata)
+        tp.save('swedish.model')
 
         testdata = dataset.get_swedish_test_corpus().parsed_sents()
-        tp = TransitionParser.load('badfeatures.model')
+        tp = TransitionParser.load('swedish.model')
 
         parsed = tp.parse(testdata)
 

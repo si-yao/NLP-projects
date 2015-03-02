@@ -115,7 +115,7 @@ class FeatureExtractor(object):
                 result.append('BUF_0_LDEP_NULL')
             if FeatureExtractor._check_informative(dep_right_most):
                 result.append('BUF_0_RDEP_NULL')
-                
+
         else:
             result.append('BUF_0_FORM_NULL').append('BUF_0_LDEP_NULL').append('BUF_0_RDEP_NULL')
 
