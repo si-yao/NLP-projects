@@ -19,7 +19,7 @@ RDEP(buf[0]): DEPREL
 2nd feature mapping:
 all of those features are set '_' by default.
 stk[0]: FORM, LEMMA, POSTAG
-stk[1]: POSTAG
+#stk[1]: POSTAG
 LDEP(stk[0]): DEPREL
 RDEP(stk[0]): DEPREL
 buf[0]: FORM, LEMMA, POSTAG
@@ -47,7 +47,7 @@ did not include FEATS info, which is important for danish(which has lots of addi
 
 3rd:
 stk[0]: FORM, LEMMA, POSTAG
-stk[1]: POSTAG
+#stk[1]: POSTAG
 LDEP(stk[0]): DEPREL
 RDEP(stk[0]): DEPREL
 buf[0]: FORM, LEMMA, POSTAG
@@ -63,5 +63,10 @@ swedish, korean, danish
 swedish, korean, danish
 0.683330013941, 0.640787949015, 0.709580838323
 Conclusion: stk[0]:FEATS + buf[0]:FEATS are important features for danish, which has lots of feats
+
+5nd:
+4nd + stk[1]: POSTAG
+swedish, korean, danish
+0.687114120693, 0.62495171881, 0.719760479042
 
 
