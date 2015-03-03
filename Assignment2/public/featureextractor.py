@@ -237,7 +237,7 @@ class FeatureExtractor(object):
         #features I use
         stk0Form = stk0Ldep = stk0Rdep = stk0Lemma = stk0Postag = stk0tag = stk0Feats = stk1Postag = stk1tag = '_'
         buf0Form = buf0Ldep = buf0Rdep = buf0Lemma = buf0Postag = buf0tag = buf0Feats = buf1Form = buf1Postag = buf1tag = buf2Postag = buf2tag = buf3Postag = '_'
-
+        stk0RdepTag = stk0LdepTag = buf0RdepTag = buf0LdepTag = '_'
         '''
         token has following keys:
         word, lemma, ctag, tag, feats, Xhead, Xrel
@@ -262,17 +262,29 @@ class FeatureExtractor(object):
                     result.append('STK_0_FEATS_' + feat)
             # Left most, right most dependency of stack[0]
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(stack_idx0, arcs)
+            idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(stack_idx0, arcs)
+            if idx_left_most < 1000000:
+                t = tokens[idx_left_most]['tag']
+                if FeatureExtractor._check_informative(t, True):
+                    stk0LdepTag = t
+            if idx_right_most > -1:
+                t = tokens[idx_right_most]['tag']
+                if FeatureExtractor._check_informative(t, True):
+                    stk0RdepTag = t
+
 
             if FeatureExtractor._check_informative(dep_left_most):
                 stk0Ldep = dep_left_most
             if FeatureExtractor._check_informative(dep_right_most):
                 stk0Rdep = dep_right_most
+
             if len(stack)>1:
                 token = tokens[stack[-2]]
                 if FeatureExtractor._check_informative(token['tag'], True):
                     stk1Postag = token['tag']
                 if FeatureExtractor._check_informative(token['ctag'], True):
                     stk1tag = token['ctag']
+
 
         if buffer:
             buffer_idx0 = buffer[0]
@@ -293,6 +305,16 @@ class FeatureExtractor(object):
                     result.append('BUF_0_FEATS_' + feat)
 
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(buffer_idx0, arcs)
+            idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(buffer_idx0, arcs)
+            if idx_left_most < 1000000:
+                t = tokens[idx_left_most]['tag']
+                if FeatureExtractor._check_informative(t, True):
+                    buf0LdepTag = t
+            if idx_right_most > -1:
+                t = tokens[idx_right_most]['tag']
+                if FeatureExtractor._check_informative(t, True):
+                    buf0RdepTag = t
+
 
             if FeatureExtractor._check_informative(dep_left_most):
                 buf0Ldep = dep_left_most
@@ -333,11 +355,15 @@ class FeatureExtractor(object):
 
             result.append('BUF_1_TAG_'+buf1Postag)
             result.append('BUF_1_FORM_'+buf1Form)
-            #result.append('BUF_2_TAG_'+buf2Postag)
+            result.append('BUF_2_TAG_'+buf2Postag)
             #result.append('BUF_3_TAG_'+buf3Postag) bad feature
             #result.append("STK_0_CTAG_"+stk0tag)
             #result.append("STK_1_CTAG_"+stk1tag)
             #result.append("BUF_0_CTAG"+buf0tag)
             #result.append("BUF_1_CTAG"+buf1tag)
             #result.append("BUF_2_CTAG"+buf2tag)
+            result.append('STK_0_LDEPTAG_'+stk0LdepTag)
+            result.append('STK_0_RDEPTAG_'+stk0RdepTag)
+            result.append('BUF_0_LDEPTAG_'+buf0LdepTag)
+            result.append('BUF_0_RDEPTAG_'+buf0RdepTag)
         return result
