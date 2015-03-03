@@ -237,7 +237,8 @@ class FeatureExtractor(object):
         #features I use
         stk0Form = stk0Ldep = stk0Rdep = stk0Lemma = stk0Postag = stk0tag = stk0Feats = stk1Postag = stk1tag = '_'
         buf0Form = buf0Ldep = buf0Rdep = buf0Lemma = buf0Postag = buf0tag = buf0Feats = buf1Form = buf1Postag = buf1tag = buf2Postag = buf2tag = buf3Postag = '_'
-        stk0RdepTag = stk0LdepTag = buf0RdepTag = buf0LdepTag = '_'
+        #stk0RdepTag = stk0LdepTag = buf0RdepTag = buf0LdepTag = '_'
+        stk0RdepForm = stk0LdepForm = buf0RdepForm = buf0LdepForm = '_'
         '''
         token has following keys:
         word, lemma, ctag, tag, feats, Xhead, Xrel
@@ -264,13 +265,13 @@ class FeatureExtractor(object):
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(stack_idx0, arcs)
             idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(stack_idx0, arcs)
             if idx_left_most < 1000000:
-                t = tokens[idx_left_most]['tag']
+                t = tokens[idx_left_most]['word']
                 if FeatureExtractor._check_informative(t, True):
-                    stk0LdepTag = t
+                    stk0LdepForm = t
             if idx_right_most > -1:
-                t = tokens[idx_right_most]['tag']
+                t = tokens[idx_right_most]['word']
                 if FeatureExtractor._check_informative(t, True):
-                    stk0RdepTag = t
+                    stk0RdepForm = t
 
 
             if FeatureExtractor._check_informative(dep_left_most):
@@ -307,13 +308,13 @@ class FeatureExtractor(object):
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(buffer_idx0, arcs)
             idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(buffer_idx0, arcs)
             if idx_left_most < 1000000:
-                t = tokens[idx_left_most]['tag']
+                t = tokens[idx_left_most]['word']
                 if FeatureExtractor._check_informative(t, True):
-                    buf0LdepTag = t
+                    buf0LdepForm = t
             if idx_right_most > -1:
-                t = tokens[idx_right_most]['tag']
+                t = tokens[idx_right_most]['word']
                 if FeatureExtractor._check_informative(t, True):
-                    buf0RdepTag = t
+                    buf0RdepForm = t
 
 
             if FeatureExtractor._check_informative(dep_left_most):
@@ -362,8 +363,8 @@ class FeatureExtractor(object):
             #result.append("BUF_0_CTAG"+buf0tag)
             #result.append("BUF_1_CTAG"+buf1tag)
             #result.append("BUF_2_CTAG"+buf2tag)
-            #result.append('STK_0_LDEPTAG_'+stk0LdepTag)
-            #result.append('STK_0_RDEPTAG_'+stk0RdepTag)
-            #result.append('BUF_0_LDEPTAG_'+buf0LdepTag)
-            #result.append('BUF_0_RDEPTAG_'+buf0RdepTag)
+            result.append('STK_0_LDEPFORM_'+stk0LdepForm)
+            result.append('STK_0_RDEPFORM_'+stk0RdepForm)
+            result.append('BUF_0_LDEPFORM_'+buf0LdepForm)
+            result.append('BUF_0_RDEPFORM_'+buf0RdepForm)
         return result

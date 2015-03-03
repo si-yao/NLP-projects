@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
         #testdata = dataset.get_swedish_test_corpus().parsed_sents()
         #testdata = dataset.get_korean_test_corpus().parsed_sents()
-        testdata = dataset.get_english_dev_corpus()().parsed_sents()
+        testdata = dataset.get_english_dev_corpus().parsed_sents()
 
         #tp = TransitionParser.load('swedish.model')
         #tp = TransitionParser.load('korean.model')

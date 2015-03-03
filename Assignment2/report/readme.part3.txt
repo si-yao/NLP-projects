@@ -69,9 +69,4 @@ Conclusion: stk[0]:FEATS + buf[0]:FEATS are important features for danish, which
 swedish, korean, danish
 0.687114120693, 0.62495171881, 0.719760479042
 
-6nd:
-5nd + 
-LDEP(stk[0]): TAG
-RDEP(stk[0]): TAG
-LDEP(buf[0]): TAG
-RDEP(buf[0]): TAG
+
