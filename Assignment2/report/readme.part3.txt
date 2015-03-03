@@ -58,4 +58,10 @@ RDEP(buf[0]): DEPREL
 swedish, korean, danish
 0.685919139614, 0.641946697567, 0.692614770459
 
+4nd:
+3rd + stk[0]:FEATS + buf[0]:FEATS
+swedish, korean, danish
+0.683330013941, 0.640787949015, 0.709580838323
+Conclusion: stk[0]:FEATS + buf[0]:FEATS are important features for danish, which has lots of feats
+
 

@@ -262,7 +262,7 @@ class FeatureExtractor(object):
                 feats = token['feats'].split("|")
                 for feat in feats:
                     result.append('BUF_0_FEATS_' + feat)
-                    
+
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(buffer_idx0, arcs)
 
             if FeatureExtractor._check_informative(dep_left_most):
@@ -299,7 +299,7 @@ class FeatureExtractor(object):
             result.append('BUF_0_TAG_'+buf0Postag)
 
             result.append('BUF_1_TAG_'+buf1Postag)
-            result.append('BUF_1_FORM_'+buf1Form)
+            #result.append('BUF_1_FORM_'+buf1Form)
             result.append('BUF_2_TAG_'+buf2Postag)
             #result.append('BUF_3_TAG_'+buf3Postag)
         return result
