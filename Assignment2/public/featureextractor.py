@@ -362,8 +362,8 @@ class FeatureExtractor(object):
             #result.append("BUF_0_CTAG"+buf0tag)
             #result.append("BUF_1_CTAG"+buf1tag)
             #result.append("BUF_2_CTAG"+buf2tag)
-            result.append('STK_0_LDEPTAG_'+stk0LdepTag)
-            result.append('STK_0_RDEPTAG_'+stk0RdepTag)
-            result.append('BUF_0_LDEPTAG_'+buf0LdepTag)
-            result.append('BUF_0_RDEPTAG_'+buf0RdepTag)
+            #result.append('STK_0_LDEPTAG_'+stk0LdepTag)
+            #result.append('STK_0_RDEPTAG_'+stk0RdepTag)
+            #result.append('BUF_0_LDEPTAG_'+buf0LdepTag)
+            #result.append('BUF_0_RDEPTAG_'+buf0RdepTag)
         return result
