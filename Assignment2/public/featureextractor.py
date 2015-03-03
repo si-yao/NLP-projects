@@ -239,7 +239,7 @@ class FeatureExtractor(object):
         buf0Form = buf0Ldep = buf0Rdep = buf0Lemma = buf0Postag = buf0tag = buf0Feats = buf1Form = buf1Postag = buf1tag = buf2Postag = buf2tag = buf3Postag = '_'
         #stk0RdepTag = stk0LdepTag = buf0RdepTag = buf0LdepTag = '_'
         #stk0RdepForm = stk0LdepForm = buf0RdepForm = buf0LdepForm = '_'
-        buf2Form = '_'
+        #buf2Form = '_'
         '''
         token has following keys:
         word, lemma, ctag, tag, feats, Xhead, Xrel
@@ -360,7 +360,7 @@ class FeatureExtractor(object):
             result.append('BUF_1_TAG_'+buf1Postag)
             result.append('BUF_1_FORM_'+buf1Form)
             result.append('BUF_2_TAG_'+buf2Postag)
-            result.append('BUF_2_FORM_'+buf2Form)
+            #result.append('BUF_2_FORM_'+buf2Form)
             #result.append('BUF_3_TAG_'+buf3Postag) bad feature
             #result.append("STK_0_CTAG_"+stk0tag)
             #result.append("STK_1_CTAG_"+stk1tag)

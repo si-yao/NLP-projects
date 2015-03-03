@@ -1,0 +1,2 @@
+b)
+For every dependence, (i,j), having i<j, one is the head, and one is the child, search every node pairs (y,z) where i<y<j, and z<i or z>j, if the dependence (y,z) exist in the graph, then it is non-projective and return false. After searching every pairs and did not return false, then the graph is projective, and return true.
