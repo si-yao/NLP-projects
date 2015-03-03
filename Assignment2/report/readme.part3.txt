@@ -66,7 +66,7 @@ Conclusion: stk[0]:FEATS + buf[0]:FEATS are important features for danish, which
 
 5nd:
 4nd + stk[1]: POSTAG
-swedish, korean, danish
-0.687114120693, 0.62495171881, 0.719760479042
+swedish, korean, danish, english
+0.687114120693, 0.62495171881, 0.719760479042, 0.688888888889
 
 

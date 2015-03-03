@@ -346,7 +346,7 @@ class FeatureExtractor(object):
             result.append('STK_0_RDEP_'+stk0Rdep)
             result.append('STK_0_LEMMA_'+stk0Lemma)
             result.append('STK_0_TAG_'+stk0Postag)
-            result.append('STK_1_TAG_'+stk1Postag)
+            #result.append('STK_1_TAG_'+stk1Postag)
 
             result.append('BUF_0_FORM_'+buf0Form)
             result.append('BUF_0_LDEP_'+buf0Ldep)
