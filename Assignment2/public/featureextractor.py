@@ -360,7 +360,7 @@ class FeatureExtractor(object):
             result.append('BUF_1_TAG_'+buf1Postag)
             result.append('BUF_1_FORM_'+buf1Form)
             result.append('BUF_2_TAG_'+buf2Postag)
-            #result.append('BUF_2_FORM_'+buf2Form)
+            result.append('BUF_2_FORM_'+buf2Form)
             #result.append('BUF_3_TAG_'+buf3Postag) bad feature
             #result.append("STK_0_CTAG_"+stk0tag)
             #result.append("STK_1_CTAG_"+stk1tag)
