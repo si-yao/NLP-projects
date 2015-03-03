@@ -43,3 +43,19 @@ LAS: 0.682834331337
 
 Problem:
 did not include FEATS info, which is important for danish(which has lots of additional syntax).
+
+
+3rd:
+stk[0]: FORM, LEMMA, POSTAG
+stk[1]: POSTAG
+LDEP(stk[0]): DEPREL
+RDEP(stk[0]): DEPREL
+buf[0]: FORM, LEMMA, POSTAG
+buf[1]: FORM, POSTAG
+buf[2]: POSTAG
+LDEP(buf[0]): DEPREL
+RDEP(buf[0]): DEPREL
+swedish, korean, danish
+0.685919139614, 0.641946697567, 0.692614770459
+
+
