@@ -41,6 +41,24 @@ class FeatureExtractor(object):
                     dep_left_most = r
         return dep_left_most, dep_right_most
 
+
+    @staticmethod
+    def find_left_right_idx(idx, arcs):
+        left_most = 1000000
+        right_most = -1
+        dep_left_most = ''
+        dep_right_most = ''
+        for (wi, r, wj) in arcs:
+            if wi == idx:
+                if (wj > wi) and (wj > right_most):
+                    right_most = wj
+                    dep_right_most = r
+                if (wj < wi) and (wj < left_most):
+                    left_most = wj
+                    dep_left_most = r
+
+        return left_most, right_most
+
     @staticmethod
     def extract_features0(tokens, buffer, stack, arcs):
         """
@@ -232,8 +250,8 @@ class FeatureExtractor(object):
                 stk0Form = token['word']
             if FeatureExtractor._check_informative(token['lemma'], True):
                 stk0Lemma = token['lemma']
-            if FeatureExtractor._check_informative(token['tag'], True):
-                stk0Postag = token['tag']
+            if FeatureExtractor._check_informative(token['ctag'], True):
+                stk0Postag = token['ctag']
 
             if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
                 feats = token['feats'].split("|")
@@ -254,8 +272,8 @@ class FeatureExtractor(object):
                 buf0Form = token['word']
             if FeatureExtractor._check_informative(token['lemma'], True):
                 buf0Lemma = token['lemma']
-            if FeatureExtractor._check_informative(token['tag'], True):
-                buf0Postag = token['tag']
+            if FeatureExtractor._check_informative(token['ctag'], True):
+                buf0Postag = token['ctag']
 
 
             if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
@@ -274,16 +292,16 @@ class FeatureExtractor(object):
                 token = tokens[buffer_idx1]
                 if FeatureExtractor._check_informative(token['word'], True):
                     buf1Form = token['word']
-                if FeatureExtractor._check_informative(token['tag'], True):
-                    buf1Postag = token['tag']
+                if FeatureExtractor._check_informative(token['ctag'], True):
+                    buf1Postag = token['ctag']
             if len(buffer) > 2:
                 token = tokens[buffer[2]]
-                if FeatureExtractor._check_informative(token['tag'], True):
-                    buf2Postag = token['tag']
+                if FeatureExtractor._check_informative(token['ctag'], True):
+                    buf2Postag = token['ctag']
             if len(buffer) > 3:
                 token = tokens[buffer[3]]
-                if FeatureExtractor._check_informative(token['tag'], True):
-                    buf3Postag = token['tag']
+                if FeatureExtractor._check_informative(token['ctag'], True):
+                    buf3Postag = token['ctag']
 
             result.append('STK_0_FORM_'+stk0Form)
             result.append('STK_0_LDEP_'+stk0Ldep)
@@ -299,7 +317,7 @@ class FeatureExtractor(object):
             result.append('BUF_0_TAG_'+buf0Postag)
 
             result.append('BUF_1_TAG_'+buf1Postag)
-            #result.append('BUF_1_FORM_'+buf1Form)
+            result.append('BUF_1_FORM_'+buf1Form)
             result.append('BUF_2_TAG_'+buf2Postag)
             #result.append('BUF_3_TAG_'+buf3Postag)
         return result
