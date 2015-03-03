@@ -6,9 +6,9 @@ from featureextractor import FeatureExtractor
 from transition import Transition
 
 if __name__ == '__main__':
-    #data = dataset.get_swedish_train_corpus().parsed_sents()
+    data = dataset.get_swedish_train_corpus().parsed_sents()
     #data = dataset.get_korean_train_corpus().parsed_sents()
-    data = dataset.get_danish_train_corpus().parsed_sents()
+    #data = dataset.get_danish_train_corpus().parsed_sents()
 
     random.seed(1234)
     subdata = random.sample(data, 200)
@@ -16,17 +16,17 @@ if __name__ == '__main__':
     try:
         tp = TransitionParser(Transition, FeatureExtractor)
         tp.train(subdata)
-        #tp.save('swedish.model')
+        tp.save('swedish.model')
         #tp.save('korean.model')
-        tp.save('danish.model')
+        #tp.save('danish.model')
 
-        #testdata = dataset.get_swedish_test_corpus().parsed_sents()
+        testdata = dataset.get_swedish_test_corpus().parsed_sents()
         #testdata = dataset.get_korean_test_corpus().parsed_sents()
-        testdata = dataset.get_danish_test_corpus().parsed_sents()
+        #testdata = dataset.get_danish_test_corpus().parsed_sents()
 
-        #tp = TransitionParser.load('swedish.model')
+        tp = TransitionParser.load('swedish.model')
         #tp = TransitionParser.load('korean.model')
-        tp = TransitionParser.load('danish.model')
+        #tp = TransitionParser.load('danish.model')
 
         parsed = tp.parse(testdata)
 
