@@ -238,7 +238,8 @@ class FeatureExtractor(object):
         stk0Form = stk0Ldep = stk0Rdep = stk0Lemma = stk0Postag = stk0tag = stk0Feats = stk1Postag = stk1tag = '_'
         buf0Form = buf0Ldep = buf0Rdep = buf0Lemma = buf0Postag = buf0tag = buf0Feats = buf1Form = buf1Postag = buf1tag = buf2Postag = buf2tag = buf3Postag = '_'
         #stk0RdepTag = stk0LdepTag = buf0RdepTag = buf0LdepTag = '_'
-        stk0RdepForm = stk0LdepForm = buf0RdepForm = buf0LdepForm = '_'
+        #stk0RdepForm = stk0LdepForm = buf0RdepForm = buf0LdepForm = '_'
+        buf2Form = '_'
         '''
         token has following keys:
         word, lemma, ctag, tag, feats, Xhead, Xrel
@@ -334,6 +335,8 @@ class FeatureExtractor(object):
                     buf2Postag = token['tag']
                 if FeatureExtractor._check_informative(token['ctag'], True):
                     buf2tag = token['ctag']
+                if FeatureExtractor._check_informative(token['word'], True):
+                    buf2Form = token['word']
             if len(buffer) > 3:
                 token = tokens[buffer[3]]
                 if FeatureExtractor._check_informative(token['tag'], True):
@@ -346,7 +349,7 @@ class FeatureExtractor(object):
             result.append('STK_0_RDEP_'+stk0Rdep)
             result.append('STK_0_LEMMA_'+stk0Lemma)
             result.append('STK_0_TAG_'+stk0Postag)
-            #result.append('STK_1_TAG_'+stk1Postag)
+            result.append('STK_1_TAG_'+stk1Postag)
 
             result.append('BUF_0_FORM_'+buf0Form)
             result.append('BUF_0_LDEP_'+buf0Ldep)
@@ -357,14 +360,15 @@ class FeatureExtractor(object):
             result.append('BUF_1_TAG_'+buf1Postag)
             result.append('BUF_1_FORM_'+buf1Form)
             result.append('BUF_2_TAG_'+buf2Postag)
+            #result.append('BUF_2_FORM_'+buf2Form)
             #result.append('BUF_3_TAG_'+buf3Postag) bad feature
             #result.append("STK_0_CTAG_"+stk0tag)
             #result.append("STK_1_CTAG_"+stk1tag)
             #result.append("BUF_0_CTAG"+buf0tag)
             #result.append("BUF_1_CTAG"+buf1tag)
             #result.append("BUF_2_CTAG"+buf2tag)
-            result.append('STK_0_LDEPFORM_'+stk0LdepForm)
-            result.append('STK_0_RDEPFORM_'+stk0RdepForm)
-            result.append('BUF_0_LDEPFORM_'+buf0LdepForm)
-            result.append('BUF_0_RDEPFORM_'+buf0RdepForm)
+            #result.append('STK_0_LDEPFORM_'+stk0LdepForm)
+            #result.append('STK_0_RDEPFORM_'+stk0RdepForm)
+            #result.append('BUF_0_LDEPFORM_'+buf0LdepForm)
+            #result.append('BUF_0_RDEPFORM_'+buf0RdepForm)
         return result
