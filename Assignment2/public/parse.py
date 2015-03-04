@@ -1,4 +1,5 @@
 from providedcode.transitionparser import TransitionParser
+from providedcode.dependencygraph import DependencyGraph
 from providedcode.evaluate import DependencyEvaluator
 from featureextractor import FeatureExtractor
 from transition import Transition
