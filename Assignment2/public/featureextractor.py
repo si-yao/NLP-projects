@@ -294,10 +294,10 @@ class FeatureExtractor(object):
             if FeatureExtractor._check_informative(token['ctag'], True):
                 stk0tag = token['ctag']
 
-            #if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
-            #    feats = token['feats'].split("|")
-            #    for feat in feats:
-            #        result.append('STK_0_FEATS_' + feat)
+            if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
+                feats = token['feats'].split("|")
+                for feat in feats:
+                    result.append('STK_0_FEATS_' + feat)
             # Left most, right most dependency of stack[0]
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(stack_idx0, arcs)
             idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(stack_idx0, arcs)
@@ -340,10 +340,10 @@ class FeatureExtractor(object):
                 buf0tag = token['ctag']
 
 
-            #if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
-                #feats = token['feats'].split("|")
-                #for feat in feats:
-                #    result.append('BUF_0_FEATS_' + feat)
+            if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
+                feats = token['feats'].split("|")
+                for feat in feats:
+                    result.append('BUF_0_FEATS_' + feat)
 
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(buffer_idx0, arcs)
             idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(buffer_idx0, arcs)
@@ -394,7 +394,9 @@ class FeatureExtractor(object):
             result.append('STK_0_RDEP_'+stk0Rdep)
             result.append('STK_0_LEMMA_'+stk0Lemma)
             result.append('STK_0_TAG_'+stk0Postag)
-            result.append('STK_1_TAG_'+stk1Postag)
+
+            #not helpful
+            #result.append('STK_1_TAG_'+stk1Postag)
 
             result.append('BUF_0_FORM_'+buf0Form)
             result.append('BUF_0_LDEP_'+buf0Ldep)
@@ -413,8 +415,8 @@ class FeatureExtractor(object):
             result.append('BUF_0_RN_'+str(buf0Rn))
             #result.append('BUF_1_LN_'+str(buf1Ln))
             #result.append('BUF_1_RN_'+str(buf1Rn))
-            result.append('STK_1_LN'+str(stk1Ln))
-            result.append('STK_1_RN'+str(stk1Rn))
+            #result.append('STK_1_LN'+str(stk1Ln))
+            #result.append('STK_1_RN'+str(stk1Rn))
 
             # distance to left child and right child
             # not helpful
