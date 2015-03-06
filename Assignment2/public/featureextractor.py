@@ -379,10 +379,10 @@ class FeatureExtractor(object):
             result.append('BUF_2_TAG_'+buf2Postag)
 
             # number of children
-            result.append('STK_0_LN_'+ stk0Ln)
-            result.append('STK_0_RN_'+ stk0Rn)
-            result.append('BUF_0_LN_'+buf0Ln)
-            result.append('BUF_0_RN'+buf0Rn)
+            result.append('STK_0_LN_'+ str(stk0Ln))
+            result.append('STK_0_RN_'+ str(stk0Rn))
+            result.append('BUF_0_LN_'+str(buf0Ln))
+            result.append('BUF_0_RN_'+str(buf0Rn))
 
             #result.append('BUF_2_FORM_'+buf2Form)
             #result.append('BUF_3_TAG_'+buf3Postag) bad feature
