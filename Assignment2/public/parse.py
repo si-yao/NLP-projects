@@ -13,8 +13,8 @@ if __name__ == '__main__':
 
     for line in fileinput.input():
             sentence = DependencyGraph.from_sentence(line)
-            for node in sentence.nodes:
-                node['ctag'] = '_'
+            for (index, node) in enumerate(sentence.nodes):
+                sentence.nodes[index]['ctag'] = '_'
 
             parsed = tp.parse([sentence])
             print parsed[0].to_conll(10).encode('utf-8')

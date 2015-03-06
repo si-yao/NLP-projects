@@ -69,3 +69,20 @@ Conclusion: stk[0]:FEATS + buf[0]:FEATS are important features for danish, which
 swedish, korean, danish, english
 0.687114120693, 0.62495171881, 0.719760479042, 0.711111111111
 
+>>>>>>>>>>>>>>
+a)
+The feature mapping provided by default is not good. It has following problems:
+1. lack of important features.
+2. should set NULL value for words that do not have certain features. NULL is also a information, so if we just add nothing when a word does not have those feature, then we actually lose some info about the configuration.
+
+I added few more features shown as follows:
+stk[0]: FORM, LEMMA, POSTAG, FEATS, NUM_OF_LEFT_CHILD, NUM_OF_RIGHT_CHILD
+stk[1]: POSTAG
+LDEP(stk[0]): DEPREL
+RDEP(stk[0]): DEPREL
+buf[0]: FORM, LEMMA, POSTAG, FEATS, NUM_OF_LEFT_CHILD, NUM_OF_RIGHT_CHILD
+buf[1]: FORM, POSTAG
+buf[2]: POSTAG
+LDEP(buf[0]): DEPREL
+
+
