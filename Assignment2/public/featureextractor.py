@@ -60,6 +60,18 @@ class FeatureExtractor(object):
         return left_most, right_most
 
     @staticmethod
+    def find_left_right_n(idx, arcs):
+        left_n = 0
+        right_n = 0
+        for(wi, r, wj) in arcs:
+            if wi == idx:
+                if(wj > idx):
+                    right_n += 1
+                else:
+                    left_n += 1
+        return left_n, right_n
+
+    @staticmethod
     def extract_features0(tokens, buffer, stack, arcs):
         """
         This function returns a list of string features for the classifier
@@ -239,6 +251,7 @@ class FeatureExtractor(object):
         buf0Form = buf0Ldep = buf0Rdep = buf0Lemma = buf0Postag = buf0tag = buf0Feats = buf1Form = buf1Postag = buf1tag = buf2Postag = buf2tag = buf3Postag = '_'
         #stk0RdepTag = stk0LdepTag = buf0RdepTag = buf0LdepTag = '_'
         #stk0RdepForm = stk0LdepForm = buf0RdepForm = buf0LdepForm = '_'
+        stk0Ln = stk0Rn = buf0Ln = buf0Rn = 0
         #buf2Form = '_'
         '''
         token has following keys:
@@ -265,6 +278,7 @@ class FeatureExtractor(object):
             # Left most, right most dependency of stack[0]
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(stack_idx0, arcs)
             idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(stack_idx0, arcs)
+            stk0Ln, stk0Rn = FeatureExtractor.find_left_right_n(stack_idx0, arcs)
             if idx_left_most < 1000000:
                 t = tokens[idx_left_most]['word']
                 if FeatureExtractor._check_informative(t, True):
@@ -308,6 +322,7 @@ class FeatureExtractor(object):
 
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(buffer_idx0, arcs)
             idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(buffer_idx0, arcs)
+            buf0Ln, buf0Rn = FeatureExtractor.find_left_right_n(buffer_idx0, arcs)
             if idx_left_most < 1000000:
                 t = tokens[idx_left_most]['word']
                 if FeatureExtractor._check_informative(t, True):
@@ -344,6 +359,8 @@ class FeatureExtractor(object):
                 if FeatureExtractor._check_informative(token['ctag'], True):
                     buf3tag = token['ctag']
 
+
+            # features shown in the table.
             result.append('STK_0_FORM_'+stk0Form)
             result.append('STK_0_LDEP_'+stk0Ldep)
             result.append('STK_0_RDEP_'+stk0Rdep)
@@ -360,13 +377,24 @@ class FeatureExtractor(object):
             result.append('BUF_1_TAG_'+buf1Postag)
             result.append('BUF_1_FORM_'+buf1Form)
             result.append('BUF_2_TAG_'+buf2Postag)
+
+            # number of children
+            result.append('STK_0_LN_'+ stk0Ln)
+            result.append('STK_0_RN_'+ stk0Rn)
+            result.append('BUF_0_LN_'+buf0Ln)
+            result.append('BUF_0_RN'+buf0Rn)
+
             #result.append('BUF_2_FORM_'+buf2Form)
             #result.append('BUF_3_TAG_'+buf3Postag) bad feature
+
+            #CTAG is not useful
             #result.append("STK_0_CTAG_"+stk0tag)
             #result.append("STK_1_CTAG_"+stk1tag)
             #result.append("BUF_0_CTAG"+buf0tag)
             #result.append("BUF_1_CTAG"+buf1tag)
             #result.append("BUF_2_CTAG"+buf2tag)
+
+            #Form of children is not useful
             #result.append('STK_0_LDEPFORM_'+stk0LdepForm)
             #result.append('STK_0_RDEPFORM_'+stk0RdepForm)
             #result.append('BUF_0_LDEPFORM_'+buf0LdepForm)
