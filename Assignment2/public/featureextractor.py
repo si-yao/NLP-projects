@@ -251,7 +251,7 @@ class FeatureExtractor(object):
         buf0Form = buf0Ldep = buf0Rdep = buf0Lemma = buf0Postag = buf0tag = buf0Feats = buf1Form = buf1Postag = buf1tag = buf2Postag = buf2tag = buf3Postag = '_'
         #stk0RdepTag = stk0LdepTag = buf0RdepTag = buf0LdepTag = '_'
         #stk0RdepForm = stk0LdepForm = buf0RdepForm = buf0LdepForm = '_'
-        stk0Ln = stk0Rn = buf0Ln = buf0Rn = 0
+        stk0Ln = stk0Rn = buf0Ln = buf0Rn = buf1Ln = buf1Rn = -1
         #buf2Form = '_'
         '''
         token has following keys:
@@ -344,6 +344,8 @@ class FeatureExtractor(object):
                     buf1Form = token['word']
                 if FeatureExtractor._check_informative(token['ctag'], True):
                     buf1Postag = token['ctag']
+                buf1Ln , buf1Rn = FeatureExtractor.find_left_right_n(buffer_idx1, arcs)
+
             if len(buffer) > 2:
                 token = tokens[buffer[2]]
                 if FeatureExtractor._check_informative(token['tag'], True):
@@ -383,7 +385,8 @@ class FeatureExtractor(object):
             result.append('STK_0_RN_'+ str(stk0Rn))
             result.append('BUF_0_LN_'+str(buf0Ln))
             result.append('BUF_0_RN_'+str(buf0Rn))
-
+            result.append('BUF_1_LN_'+str(buf1Ln))
+            result.append('BUF_1_RN_'+str(buf1Rn))
             #result.append('BUF_2_FORM_'+buf2Form)
             #result.append('BUF_3_TAG_'+buf3Postag) bad feature
 
