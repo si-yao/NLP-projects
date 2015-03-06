@@ -294,10 +294,10 @@ class FeatureExtractor(object):
             if FeatureExtractor._check_informative(token['ctag'], True):
                 stk0tag = token['ctag']
 
-            if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
-                feats = token['feats'].split("|")
-                for feat in feats:
-                    result.append('STK_0_FEATS_' + feat)
+            #if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
+            #    feats = token['feats'].split("|")
+            #    for feat in feats:
+            #        result.append('STK_0_FEATS_' + feat)
             # Left most, right most dependency of stack[0]
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(stack_idx0, arcs)
             idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(stack_idx0, arcs)
@@ -340,10 +340,10 @@ class FeatureExtractor(object):
                 buf0tag = token['ctag']
 
 
-            if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
-                feats = token['feats'].split("|")
-                for feat in feats:
-                    result.append('BUF_0_FEATS_' + feat)
+            #if 'feats' in token and FeatureExtractor._check_informative(token['feats']):
+                #feats = token['feats'].split("|")
+                #for feat in feats:
+                #    result.append('BUF_0_FEATS_' + feat)
 
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(buffer_idx0, arcs)
             idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(buffer_idx0, arcs)
@@ -417,10 +417,11 @@ class FeatureExtractor(object):
             result.append('STK_1_RN'+str(stk1Rn))
 
             # distance to left child and right child
-            result.append('STK_0_LD_'+str(stk0Ld))
-            result.append('STK_0_RD_'+str(stk0Rd))
-            result.append('BUF_0_LD_'+str(buf0Ld))
-            result.append('BUF_0_RD_'+str(buf0Rd))
+            # not helpful
+            #result.append('STK_0_LD_'+str(stk0Ld))
+            #result.append('STK_0_RD_'+str(stk0Rd))
+            #result.append('BUF_0_LD_'+str(buf0Ld))
+            #result.append('BUF_0_RD_'+str(buf0Rd))
 
             #result.append('BUF_2_FORM_'+buf2Form)
             #result.append('BUF_3_TAG_'+buf3Postag) bad feature
