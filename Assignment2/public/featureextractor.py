@@ -428,10 +428,10 @@ class FeatureExtractor(object):
             #result.append('BUF_3_TAG_'+buf3Postag) bad feature
 
             #CTAG is not useful
-            #result.append("STK_0_CTAG_"+stk0tag)
-            #result.append("STK_1_CTAG_"+stk1tag)
-            #result.append("BUF_0_CTAG"+buf0tag)
-            #result.append("BUF_1_CTAG"+buf1tag)
+            result.append("STK_0_CTAG_"+stk0tag)
+            result.append("STK_1_CTAG_"+stk1tag)
+            result.append("BUF_0_CTAG"+buf0tag)
+            result.append("BUF_1_CTAG"+buf1tag)
             #result.append("BUF_2_CTAG"+buf2tag)
 
             #Form of children is not useful
