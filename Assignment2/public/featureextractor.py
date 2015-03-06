@@ -43,6 +43,28 @@ class FeatureExtractor(object):
 
 
     @staticmethod
+    def find_left_right_distance(idx, arcs):
+        left_most = 1000000
+        right_most = -1
+        dep_left_most = ''
+        dep_right_most = ''
+        for (wi, r, wj) in arcs:
+            if wi == idx:
+                if (wj > wi) and (wj > right_most):
+                    right_most = wj
+                    dep_right_most = r
+                if (wj < wi) and (wj < left_most):
+                    left_most = wj
+                    dep_left_most = r
+        if(left_most == 1000000):
+            left_most = idx
+        if(right_most == -1):
+            right_most = idx
+
+        return idx-left_most, right_most-idx
+
+
+    @staticmethod
     def find_left_right_idx(idx, arcs):
         left_most = 1000000
         right_most = -1
@@ -252,6 +274,7 @@ class FeatureExtractor(object):
         #stk0RdepTag = stk0LdepTag = buf0RdepTag = buf0LdepTag = '_'
         #stk0RdepForm = stk0LdepForm = buf0RdepForm = buf0LdepForm = '_'
         stk0Ln = stk0Rn = stk1Ln = stk1Rn = buf0Ln = buf0Rn = buf1Ln = buf1Rn = -1
+        stk0Ld = stk0Rd = buf0Ld = buf0Rd = -1
         #buf2Form = '_'
         '''
         token has following keys:
@@ -279,6 +302,7 @@ class FeatureExtractor(object):
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(stack_idx0, arcs)
             idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(stack_idx0, arcs)
             stk0Ln, stk0Rn = FeatureExtractor.find_left_right_n(stack_idx0, arcs)
+            stk0Ld, stk0Rd = FeatureExtractor.find_left_right_n(stack_idx0, arcs)
             if idx_left_most < 1000000:
                 t = tokens[idx_left_most]['word']
                 if FeatureExtractor._check_informative(t, True):
@@ -324,6 +348,7 @@ class FeatureExtractor(object):
             dep_left_most, dep_right_most = FeatureExtractor.find_left_right_dependencies(buffer_idx0, arcs)
             idx_left_most, idx_right_most = FeatureExtractor.find_left_right_idx(buffer_idx0, arcs)
             buf0Ln, buf0Rn = FeatureExtractor.find_left_right_n(buffer_idx0, arcs)
+            buf0Ld, buf0Rd = FeatureExtractor.find_left_right_n(buffer_idx0, arcs)
             if idx_left_most < 1000000:
                 t = tokens[idx_left_most]['word']
                 if FeatureExtractor._check_informative(t, True):
@@ -392,7 +417,10 @@ class FeatureExtractor(object):
             result.append('STK_1_RN'+str(stk1Rn))
 
             # distance to left child and right child
-
+            result.append('STK_0_LD_'+str(stk0Ld))
+            result.append('STK_0_RD_'+str(stk0Rd))
+            result.append('BUF_0_LD_'+str(buf0Ld))
+            result.append('BUF_0_RD_'+str(buf0Rd))
 
             #result.append('BUF_2_FORM_'+buf2Form)
             #result.append('BUF_3_TAG_'+buf3Postag) bad feature
