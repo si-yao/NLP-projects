@@ -433,7 +433,7 @@ class FeatureExtractor(object):
             result.append("STK_1_CTAG_"+stk1tag)
             result.append("BUF_0_CTAG"+buf0tag)
             result.append("BUF_1_CTAG"+buf1tag)
-            #result.append("BUF_2_CTAG"+buf2tag)
+            result.append("BUF_2_CTAG"+buf2tag)
 
             #Form of children is not useful
             #result.append('STK_0_LDEPFORM_'+stk0LdepForm)
