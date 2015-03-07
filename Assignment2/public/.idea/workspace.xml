@@ -662,12 +662,12 @@
       <workItem from="1425427736314" duration="212000" />
       <workItem from="1425444508796" duration="2638000" />
       <workItem from="1425489077861" duration="217000" />
-      <workItem from="1425606514628" duration="8404000" />
+      <workItem from="1425606514628" duration="8616000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29558000" />
+    <option name="totallyTimeSpent" value="29770000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="43" y="23" width="1397" height="877" extended-state="6" />
@@ -723,6 +723,10 @@
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/test.py">

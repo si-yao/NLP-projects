@@ -92,7 +92,11 @@ This feature is helpful for all languages. It increases the LAS of Swedish, Kore
 
 
 d)
-The complexity of the arc-eager shift-reduce parser is O(n), where n is the number of words of a sentence. The parser reads words one by one from left to right, and create dependency as soon as possible. The algorithm is very efficient. But it has some tradoffs. The first one is that the algorithm only works for projective sentences. And second, if the algorithm reaches the configuration that cannot derive the gold tree, then the accuracy of the result will be low. 
+The complexity of the classic (without SVM) arc-eager shift-reduce parser is O(N), where N is the number of words of a sentence. The parser reads words one by one from left to right, and create dependency as soon as possible.
+
+If we consider the complexity of extracting features and SVM, then the complexity could be much higher. First extracting features from one configuration need O(N) operations. And for each sentence, it at most has N configurations, so the complexity for extracting features for a sentence is O(N^2). And if we have M training datas, then we need O(MN^2) operations for extracting features. Moreover, the complexity of SVM could be much higher, which depends on the implementation of SVM. 
+
+The algorithm has some tradoffs. The first one is that the algorithm only works for projective sentences. And second, if the algorithm reaches the configuration that cannot derive the gold tree, then the accuracy of the result will be low. 
 
 
 
