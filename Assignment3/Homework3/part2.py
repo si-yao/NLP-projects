@@ -85,9 +85,9 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
 	data = parse_data(xml_file)
 	outfile = codecs.open(output, encoding = 'utf-8', mode = 'w')
 	for lexelt, instances in sorted(data.iteritems(), key = lambda d: replace_accented(d[0].split('.')[0])):
-    	if(not lexelt in clf_map):
-    		continue
-        for instance_id, context in sorted(instances, key = lambda d: int(d[0].split('.')[-1])):
+		if(not lexelt in clf_map):
+			continue
+		for instance_id, context in sorted(instances, key = lambda d: int(d[0].split('.')[-1])):
 			vector = get_vector_from_context(context, voca_all_map[lexelt], 10)
 			tag = clf_map[lexelt].predict(vector)
 			sens_map = sens_all_map[lexelt]
@@ -97,7 +97,6 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
 					break
 			outfile.write(replace_accented(lexelt + ' ' + instance_id + ' ' + sid + '\n'))
 	outfile.close()
-
 
 def get_vector_from_context(context_node, voca_map, window):
 		before = nltk.word_tokenize((context_node.childNodes[0].nodeValue).replace('\n', ''))
