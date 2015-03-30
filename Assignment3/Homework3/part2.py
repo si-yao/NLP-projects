@@ -116,7 +116,7 @@ def get_vector_from_context(context_node, voca_map, window):
 		return vector
 
 if __name__ == '__main__':
-	if len(sys.argv) != 3:
+	if len(sys.argv) != 4:
 		print 'Usage: python *.py [input] [output] [testfile]'
 		sys.exit(0)
 	xmldoc = minidom.parse(sys.argv[1])
