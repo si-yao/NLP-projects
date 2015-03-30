@@ -2,6 +2,9 @@ from xml.dom import minidom
 import nltk
 from sklearn import svm
 from sklearn import neighbors
+import codecs
+import sys
+import unicodedata
 #come into lexelt node and window size, come out train, tag data, and the maps where string mapping to the index.
 #return:
 #trainlist: is 2d array, each row is a vector. 
