@@ -115,8 +115,8 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
 			#print vector
 			#print before
 			#print after
-			print lexelt
-			raw_input("Press Enter to continue...")
+			#print lexelt
+			#raw_input("Press Enter to continue...")
 			tag = clf_map[lexelt].predict(vector)
 			#print tag
 			#raw_input("Enter")
@@ -163,6 +163,8 @@ def parse_data(input_file):
 
 
 def get_vector_from_context(before, after, voca_map, window):
+	before = nltk.word_tokenize(before.replace('\n',' '))
+	after = nltk.word_tokenize(after.replace('\n',' '))
 	size = len(voca_map)
 	vector = [0 for i in range(0, size)]
 	before_count = 0
