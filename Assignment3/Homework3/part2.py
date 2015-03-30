@@ -90,8 +90,8 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
 	for lexelt, instances in sorted(data.iteritems(), key = lambda d: replace_accented(d[0].split('.')[0])):
 		if(not lexelt in clf_map):
 			continue
-		for instance_id, context in sorted(instances, key = lambda d: int(d[0].split('.')[-1])):
-			vector = get_vector_from_context(context, voca_all_map[lexelt], 10)
+		for instance_id, before, after in sorted(instances, key = lambda d: int(d[0].split('.')[-1])):
+			vector = get_vector_from_context(before, after, voca_all_map[lexelt], 10)
 			tag = clf_map[lexelt].predict(vector)
 			sens_map = sens_all_map[lexelt]
 			for voc in sens_map:
@@ -101,9 +101,36 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
 			outfile.write(replace_accented(lexelt + ' ' + instance_id + ' ' + sid + '\n'))
 	outfile.close()
 
-def get_vector_from_context(context_node, voca_map, window):
-		before = nltk.word_tokenize((context_node.childNodes[0].nodeValue).replace('\n', ''))
-		after = nltk.word_tokenize((context_node.childNodes[2].nodeValue).replace('\n', ''))
+
+def parse_data(input_file):
+	'''
+	Parse the .xml dev data file
+
+	param str input_file: The input data file path
+	return dict: A dictionary with the following structure
+		{
+			lexelt: [(instance_id, context), ...],
+			...
+		}
+	'''
+	xmldoc = minidom.parse(input_file)
+	data = {}
+	lex_list = xmldoc.getElementsByTagName('lexelt')
+	for node in lex_list:
+		lexelt = node.getAttribute('item')
+		data[lexelt] = []
+		inst_list = node.getElementsByTagName('instance')
+		for inst in inst_list:
+			instance_id = inst.getAttribute('id')
+			l = inst.getElementsByTagName('context')[0]
+			before = l.childNodes[0].nodeValue.replace('\n', '')
+			after = l.childNodes[2].nodeValue.replace('\n', '')
+			data[lexelt].append((instance_id, before, after))
+	return data
+
+
+
+def get_vector_from_context(before, after, voca_map, window):
 		size = len(voca_map)
 		vector = [0 for i in range(0, size)]
 		for i in range(0, window):
