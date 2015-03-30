@@ -114,8 +114,8 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
 			#print after
 			#raw_input("Press Enter to continue...")
 			tag = clf_map[lexelt].predict(vector)
-			print tag
-			raw_input("Enter")
+			#print tag
+			#raw_input("Enter")
 			sens_map = sens_all_map[lexelt]
 			for voc in sens_map:
 				if sens_map[voc] == tag:
