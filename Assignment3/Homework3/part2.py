@@ -77,7 +77,7 @@ def train_all(lex_list, window, alg, para1, para2):
 		voca_all_map[lexelt] = voca_map
 		sens_all_map[lexelt] = sens_map
 		if alg == 'svm':
-			clf = svm.SVC(gamma=para1, C=para2)
+			clf = svm.LinearSVC()
 		else: #knn
 			clf = neighbors.KNeighborsClassifier(para1, weights=para2) #para2 is usually 'uniform'
 		clf.fit(trainlist, taglist)
@@ -152,7 +152,7 @@ if __name__ == '__main__':
 	if len(sys.argv) != 4:
 		print 'Usage: python *.py [input] [output] [testfile]'
 		sys.exit(0)
-	window = 10
+	window = 20
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')
 	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, 'svm', 0.001, 100)
