@@ -153,6 +153,6 @@ if __name__ == '__main__':
 		sys.exit(0)
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')
-	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, 'svm', 0.001, 100)
+	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, 'knn', 15, 'uniform')
 	test_all_output(clf_map, voca_all_map, sens_all_map, sys.argv[3], sys.argv[2])
 
