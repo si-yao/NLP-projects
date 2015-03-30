@@ -55,8 +55,8 @@ def extract_train_from_lex(lexnode, window):
 		for voc in data_dic:
 			train[voca_map[voc]] += data_dic[voc]
 		trainlist.append(train)
-		print train 
-		raw_input("Enter!")
+		#print train 
+		#raw_input("Enter!")
 	for sens in senslist:
 		taglist.append(sens_map[sens])
 
@@ -88,6 +88,9 @@ def train_all(lex_list, window, alg, para1, para2):
 
 
 def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
+	#for k in clf_map:
+	#print clf_map[k]
+	#raw_input("Enter")
 	data = parse_data(xml_file)
 	outfile = codecs.open(output, encoding = 'utf-8', mode = 'w')
 	for lexelt, instances in sorted(data.iteritems(), key = lambda d: replace_accented(d[0].split('.')[0])):
@@ -100,6 +103,8 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
 			#print after
 			#raw_input("Press Enter to continue...")
 			tag = clf_map[lexelt].predict(vector)
+			print tag
+			raw_input("Enter")
 			sens_map = sens_all_map[lexelt]
 			for voc in sens_map:
 				if sens_map[voc] == tag:
