@@ -55,6 +55,8 @@ def extract_train_from_lex(lexnode, window):
 		for voc in data_dic:
 			train[voca_map[voc]] += data_dic[voc]
 		trainlist.append(train)
+		print train 
+		raw_input("Enter!")
 	for sens in senslist:
 		taglist.append(sens_map[sens])
 
@@ -77,7 +79,7 @@ def train_all(lex_list, window, alg, para1, para2):
 		voca_all_map[lexelt] = voca_map
 		sens_all_map[lexelt] = sens_map
 		if alg == 'svm':
-			clf = svm.LinearSVC()
+			clf = svm.SVC()
 		else: #knn
 			clf = neighbors.KNeighborsClassifier(para1, weights=para2) #para2 is usually 'uniform'
 		clf.fit(trainlist, taglist)
@@ -141,22 +143,22 @@ def parse_data(input_file):
 
 
 def get_vector_from_context(before, after, voca_map, window):
-		size = len(voca_map)
-		vector = [0 for i in range(0, size)]
-		for i in range(0, window):
-			if(i < len(before)):
-				if(before[-1-i] in voca_map):
-					vector[voca_map[before[-1-i]]] += 1
-			if(i < len(after)):
-				if(after[i] in voca_map):
-					vector[voca_map[after[i]]] += 1
-		return vector
+	size = len(voca_map)
+	vector = [0 for i in range(0, size)]
+	for i in range(0, window):
+		if(i < len(before)):
+			if(before[-1-i] in voca_map):
+				vector[voca_map[before[-1-i]]] += 1
+		if(i < len(after)):
+			if(after[i] in voca_map):
+				vector[voca_map[after[i]]] += 1
+	return vector
 
 if __name__ == '__main__':
 	if len(sys.argv) != 4:
 		print 'Usage: python *.py [input] [output] [testfile]'
 		sys.exit(0)
-	window = 20
+	window = 10
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')
 	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, 'svm', 15, 'uniform')
