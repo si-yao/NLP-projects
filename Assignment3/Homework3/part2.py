@@ -84,8 +84,7 @@ def train_all(lex_list, alg, para1, para2):
 def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
 	data = parse_data(xml_file)
 	outfile = codecs.open(output, encoding = 'utf-8', mode = 'w')
-
-    for lexelt, instances in sorted(data.iteritems(), key = lambda d: replace_accented(d[0].split('.')[0])):
+	for lexelt, instances in sorted(data.iteritems(), key = lambda d: replace_accented(d[0].split('.')[0])):
     	if(not lexelt in clf_map):
     		continue
         for instance_id, context in sorted(instances, key = lambda d: int(d[0].split('.')[-1])):
