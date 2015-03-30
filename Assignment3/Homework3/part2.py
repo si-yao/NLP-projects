@@ -174,6 +174,8 @@ def get_vector_from_context(before, after, voca_map, window):
 		voc = before[-1-before_count].lower()
 		if(len(voc)==1):
 			continue
+		if not voc in voca_map:
+			continue
 		vector[voca_map[voc]] += 1
 		before_count += 1
 	after_count = 0
@@ -182,6 +184,8 @@ def get_vector_from_context(before, after, voca_map, window):
 		after_i += 1
 		voc = after[after_count].lower()
 		if(len(voc)==1):
+			continue
+		if not voc in voca_map:
 			continue
 		vector[voca_map[voc]] += 1
 		after_count += 1
