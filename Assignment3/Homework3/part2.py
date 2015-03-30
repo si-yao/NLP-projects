@@ -24,15 +24,22 @@ def extract_train_from_lex(lexnode, window):
 		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', ''))
 		after = nltk.word_tokenize((l.childNodes[2].nodeValue).replace('\n', ''))
 		train_dic = {}
-		for i in range(0,window):
-			if i<len(before):
-				voc = before[-1-i]
-				voca_set.add(voc)
-				train_dic[voc] = train_dic.get(voc,0) + 1
-			if i<len(after):
-				voc = after[i]
-				voca_set.add(voc)
-				train_dic[voc] = train_dic.get(voc,0) + 1
+		before_count = 0
+		after_count = 0
+		while(before_count<window and before_count<len(before)):
+			voc = before[-1-before_count].lower()
+			if(len(voc)==1):
+				continue
+			voca_set.add(voc)
+			train_dic[voc] = train_dic.get(voc,0) + 1
+			before_count += 1
+		while(after_count<window and after_count<len(after)):
+			voc = after[after_count].lower()
+			if(len(voc)==1):
+				continue
+			voca_set.add(voc)
+			train_dic[voc] = train_dic.get(voc,0) + 1
+			after_count += 1
 		datalist.append(train_dic)
 		sense_id = inst.getElementsByTagName('answer')[0].getAttribute('senseid')
 		senslist.append(sense_id)
@@ -150,13 +157,21 @@ def parse_data(input_file):
 def get_vector_from_context(before, after, voca_map, window):
 	size = len(voca_map)
 	vector = [0 for i in range(0, size)]
-	for i in range(0, window):
-		if(i < len(before)):
-			if(before[-1-i] in voca_map):
-				vector[voca_map[before[-1-i]]] += 1
-		if(i < len(after)):
-			if(after[i] in voca_map):
-				vector[voca_map[after[i]]] += 1
+	before_count = 0
+	while(before_count<window and before_count<len(before)):
+		voc = before[-1-before_count].lower()
+		if(len(voc)==1):
+			continue
+		vector[voca_map[voc]] += 1
+		before_count += 1
+	after_count = 0
+	while(after_count<window and after_count<len(after)):
+		voc = after[after_count].lower()
+		if(len(voc)==1):
+			continue
+		vector[voca_map[voc]] += 1
+		after_count += 1
+
 	return vector
 
 if __name__ == '__main__':
