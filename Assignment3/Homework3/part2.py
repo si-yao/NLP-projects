@@ -93,8 +93,10 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
 			continue
 		for instance_id, before, after in sorted(instances, key = lambda d: int(d[0].split('.')[-1])):
 			vector = get_vector_from_context(before, after, voca_all_map[lexelt], window)
-			print vector
-			raw_input("Press Enter to continue...")
+			#print vector
+			#print before
+			#print after
+			#raw_input("Press Enter to continue...")
 			tag = clf_map[lexelt].predict(vector)
 			sens_map = sens_all_map[lexelt]
 			for voc in sens_map:
@@ -157,6 +159,6 @@ if __name__ == '__main__':
 	window = 20
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')
-	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, 'svm', 0.001, 100)
+	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, 'svm', 15, 'uniform')
 	test_all_output(clf_map, voca_all_map, sens_all_map, sys.argv[3], sys.argv[2])
 
