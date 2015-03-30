@@ -25,16 +25,20 @@ def extract_train_from_lex(lexnode, window):
 		after = nltk.word_tokenize((l.childNodes[2].nodeValue).replace('\n', ''))
 		train_dic = {}
 		before_count = 0
+		before_i = -1
 		after_count = 0
-		while(before_count<window and before_count<len(before)):
-			voc = before[-1-before_count].lower()
+		after_i = -1
+		while(before_count<window and before_i<len(before)-1):
+			before_i += 1
+			voc = before[-1-before_i].lower()
 			if(len(voc)==1):
 				continue
 			voca_set.add(voc)
 			train_dic[voc] = train_dic.get(voc,0) + 1
 			before_count += 1
-		while(after_count<window and after_count<len(after)):
-			voc = after[after_count].lower()
+		while(after_count<window and after_i<len(after)-1):
+			after_i += 1
+			voc = after[after_i].lower()
 			if(len(voc)==1):
 				continue
 			voca_set.add(voc)
@@ -158,14 +162,18 @@ def get_vector_from_context(before, after, voca_map, window):
 	size = len(voca_map)
 	vector = [0 for i in range(0, size)]
 	before_count = 0
-	while(before_count<window and before_count<len(before)):
+	before_i = -1
+	while(before_count<window and before_i<len(before)-1):
+		before_i += 1
 		voc = before[-1-before_count].lower()
 		if(len(voc)==1):
 			continue
 		vector[voca_map[voc]] += 1
 		before_count += 1
 	after_count = 0
-	while(after_count<window and after_count<len(after)):
+	after_i = -1
+	while(after_count<window and after_i<len(after)-1):
+		after_i += 1
 		voc = after[after_count].lower()
 		if(len(voc)==1):
 			continue
