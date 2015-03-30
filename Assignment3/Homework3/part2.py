@@ -102,6 +102,11 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
 	outfile.close()
 
 
+def replace_accented(input_str):
+    nkfd_form = unicodedata.normalize('NFKD', input_str)
+    return u"".join([c for c in nkfd_form if not unicodedata.combining(c)])
+
+
 def parse_data(input_file):
 	'''
 	Parse the .xml dev data file
