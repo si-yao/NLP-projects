@@ -20,6 +20,11 @@ def extract_train_from_lex(lexnode, window):
 	sens_set = set()
 	for inst in inst_list:
 		l = inst.getElementsByTagName('context')[0]
+		sense_id = inst.getElementsByTagName('answer')[0].getAttribute('senseid')
+		if(sense_id=="U"):
+			continue
+		senslist.append(sense_id)
+		sens_set.add(sense_id)
 		#Could do stemming here.
 		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', ''))
 		after = nltk.word_tokenize((l.childNodes[2].nodeValue).replace('\n', ''))
@@ -45,9 +50,7 @@ def extract_train_from_lex(lexnode, window):
 			train_dic[voc] = train_dic.get(voc,0) + 1
 			after_count += 1
 		datalist.append(train_dic)
-		sense_id = inst.getElementsByTagName('answer')[0].getAttribute('senseid')
-		senslist.append(sense_id)
-		sens_set.add(sense_id)
+
 	voca_map = {}
 	train_idx = 0
 	for voc in voca_set:
