@@ -36,16 +36,16 @@ def extract_train_from_lex(lexnode, window):
 		while(before_count<window and before_i<len(before)-1):
 			before_i += 1
 			voc = before[-1-before_i].lower()
-			if(len(voc)==1):
-				continue
+			#if(len(voc)==1):
+			#	continue
 			voca_set.add(voc)
 			train_dic[voc] = train_dic.get(voc,0) + 1
 			before_count += 1
 		while(after_count<window and after_i<len(after)-1):
 			after_i += 1
 			voc = after[after_i].lower()
-			if(len(voc)==1):
-				continue
+			#if(len(voc)==1):
+			#	continue
 			voca_set.add(voc)
 			train_dic[voc] = train_dic.get(voc,0) + 1
 			after_count += 1
@@ -93,7 +93,7 @@ def train_all(lex_list, window, alg, para1, para2):
 		voca_all_map[lexelt] = voca_map
 		sens_all_map[lexelt] = sens_map
 		if alg == 'svm':
-			clf = svm.LinearSVC()
+			clf = svm.LinearSVC(C=0.1)
 		else: #knn
 			clf = neighbors.KNeighborsClassifier(para1, weights=para2) #para2 is usually 'uniform'
 		clf.fit(trainlist, taglist)
@@ -172,8 +172,8 @@ def get_vector_from_context(before, after, voca_map, window):
 	while(before_count<window and before_i<len(before)-1):
 		before_i += 1
 		voc = before[-1-before_count].lower()
-		if(len(voc)==1):
-			continue
+		#if(len(voc)==1):
+		#	continue
 		if not voc in voca_map:
 			continue
 		vector[voca_map[voc]] += 1
@@ -183,8 +183,8 @@ def get_vector_from_context(before, after, voca_map, window):
 	while(after_count<window and after_i<len(after)-1):
 		after_i += 1
 		voc = after[after_count].lower()
-		if(len(voc)==1):
-			continue
+		#if(len(voc)==1):
+		#	continue
 		if not voc in voca_map:
 			continue
 		vector[voca_map[voc]] += 1
