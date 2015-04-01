@@ -5,6 +5,7 @@ from sklearn import neighbors
 import codecs
 import sys
 import unicodedata
+from nltk.stem.snowball import SnowballStemmer
 #come into lexelt node and window size, come out train, tag data, and the maps where string mapping to the index.
 #return:
 #trainlist: is 2d array, each row is a vector. 
@@ -18,6 +19,9 @@ def extract_train_from_lex(lexnode, window, lang='English'):
 	senslist = []
 	voca_set = set()
 	sens_set = set()
+	stemmer = SnowballStemmer(lang.lower())
+	stopwords = nltk.corpus.stopwords.words(lang.lower())
+
 	for inst in inst_list:
 		l = inst.getElementsByTagName('context')[0]
 		sense_id = inst.getElementsByTagName('answer')[0].getAttribute('senseid')
@@ -26,11 +30,10 @@ def extract_train_from_lex(lexnode, window, lang='English'):
 		senslist.append(sense_id)
 		sens_set.add(sense_id)
 		#Could do stemming here.
-		stopwords = nltk.corpus.stopwords.words(lang.lower())
 		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', '').lower())
 		after = nltk.word_tokenize((l.childNodes[2].nodeValue).replace('\n', '').lower())
-		before = [w for w in before if w.lower() not in stopwords]
-		after = [w for w in after if w.lower() not in stopwords]
+		before = [stemmer.stem(w) for w in before if w.lower() not in stopwords]
+		after = [stemmer.stem(w) for w in after if w.lower() not in stopwords]
 		train_dic = {}
 		before_count = 0
 		before_i = -1
@@ -166,11 +169,12 @@ def parse_data(input_file):
 
 
 def get_vector_from_context(before, after, voca_map, window, lang='English'):
+	stemmer = SnowballStemmer(lang.lower())
 	stopwords = nltk.corpus.stopwords.words(lang.lower())
 	before = nltk.word_tokenize(before.replace('\n',' ').lower())
 	after = nltk.word_tokenize(after.replace('\n',' ').lower())
-	before = [w for w in before if w.lower() not in stopwords]
-	after = [w for w in after if w.lower() not in stopwords]
+	before = [stemmer.stem(w) for w in before if w.lower() not in stopwords]
+	after = [stemmer.stem(w) for w in after if w.lower() not in stopwords]
 	size = len(voca_map)
 	vector = [0 for i in range(0, size)]
 	before_count = 0
