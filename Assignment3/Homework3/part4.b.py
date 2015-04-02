@@ -215,7 +215,8 @@ def get_vector_from_context(before, after, voca_map, window, lang):
 			continue
 		lst = getSynset(voc)
 		for voc in lst:
-			vector[voca_map[voc]] += 1
+			if voc in voca_map:
+				vector[voca_map[voc]] += 1
 		after_count += 1
 
 	return vector
