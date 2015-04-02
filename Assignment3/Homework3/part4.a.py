@@ -12,7 +12,7 @@ from nltk.stem.snowball import SnowballStemmer
 #taglist: is an array, each element corresponding to one row in trainlist.
 #voca_map: word -> index in vector
 #sens_map: sens_id -> tag nubmer in taglist
-def extract_train_from_lex(lexnode, window, lang='English'):
+def extract_train_from_lex(lexnode, window, lang):
 	node = lexnode
 	inst_list = node.getElementsByTagName('instance')
 	datalist = []
@@ -89,7 +89,7 @@ def extract_train_from_lex(lexnode, window, lang='English'):
 #give the lex_list, and train all the model for each lex item
 #return a dic, instanceWord -> model
 #for svm, para1 is gamma, para2 is C; for knn, para1 is k, para2 is weight (uniform)
-def train_all(lex_list, window, alg, para1, para2, lang = 'English'):
+def train_all(lex_list, window, alg, para1, para2, lang):
 	voca_all_map = {}
 	sens_all_map = {}
 	clf_map = {}
@@ -107,7 +107,7 @@ def train_all(lex_list, window, alg, para1, para2, lang = 'English'):
 	return (clf_map, voca_all_map, sens_all_map)
 
 
-def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output, lang = 'English'):
+def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output, lang):
 	#for k in clf_map:
 	#print clf_map[k]
 	#raw_input("Enter")
@@ -168,7 +168,7 @@ def parse_data(input_file):
 
 
 
-def get_vector_from_context(before, after, voca_map, window, lang='English'):
+def get_vector_from_context(before, after, voca_map, window, lang):
 	stemmer = SnowballStemmer(lang.lower())
 	stopwords = nltk.corpus.stopwords.words(lang.lower())
 	before = nltk.word_tokenize(before.replace('\n',' ').lower())
