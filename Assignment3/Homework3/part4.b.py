@@ -10,7 +10,7 @@ from nltk.corpus import wordnet as wn
 
 def getSynset(word):
 	sset = wn.synsets(word)
-	lst = [s.name() for s in sens]
+	lst = [s.name() for s in sset]
 #come into lexelt node and window size, come out train, tag data, and the maps where string mapping to the index.
 #return:
 #trainlist: is 2d array, each row is a vector. 
