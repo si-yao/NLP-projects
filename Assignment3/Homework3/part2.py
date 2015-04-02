@@ -53,6 +53,9 @@ def extract_train_from_lex(lexnode, window, lang):
 			train_dic[voc] = train_dic.get(voc,0) + 1
 			after_count += 1
 		datalist.append(train_dic)
+		#print train_dic
+		#print voca_set
+		#raw_input("enter")
 
 	voca_map = {}
 	train_idx = 0
@@ -104,7 +107,7 @@ def train_all(lex_list, window, alg, para1, para2, lang):
 	return (clf_map, voca_all_map, sens_all_map)
 
 
-def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output, lang):
+def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output, window, lang):
 	#for k in clf_map:
 	#print clf_map[k]
 	#raw_input("Enter")
@@ -200,14 +203,14 @@ def get_vector_from_context(before, after, voca_map, window):
 
 if __name__ == '__main__':
 	if len(sys.argv) < 4:
-		print 'Usage: python *.py [input] [output] [testfile]'
+		print 'Usage: python *.py [input] [output] [testfile] [lang]'
 		sys.exit(0)
 	lang = 'English'
 	if len(sys.argv) == 5:
 		lang = sys.argv[4]
-	window = 10
+	window = 5
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')
 	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, 'svm', 15, 'uniform', lang)
-	test_all_output(clf_map, voca_all_map, sens_all_map, sys.argv[3], sys.argv[2], lang)
+	test_all_output(clf_map, voca_all_map, sens_all_map, sys.argv[3], sys.argv[2], window, lang)
 

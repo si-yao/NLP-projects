@@ -28,7 +28,8 @@ def top_k_words(lexnode, window, k, lang):
 	for inst in inst_list:
 		l = inst.getElementsByTagName('context')[0]
 		sense_id = inst.getElementsByTagName('answer')[0].getAttribute('senseid')
-		sens_wordcount_map[sense_id] = {}
+		if not sense_id in sens_wordcount_map:
+			sens_wordcount_map[sense_id] = {}
 		if(not lang.lower() == 'english'):
 			l = l.getElementsByTagName('target')[0]
 		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', '').lower())
@@ -50,13 +51,16 @@ def top_k_words(lexnode, window, k, lang):
 		wc_map = sens_wordcount_map[sense]
 		word_score_lst = []
 		for word in wc_map:
-			p = wc_map[word]/(wordcount_map[word]-wc_map[word])
+			p = wc_map[word]/(wordcount_map[word]-wc_map[word]+0.00001)
 			word_score_lst.append(tuple([word, p]))
 		word_score_lst = sorted(word_score_lst, key=lambda e: e[1])
+		#print word_score_lst
 		for i in range(0,k):
-			if(k>=len(word_score_lst)):
+			if(i>=len(word_score_lst)):
 				break
-			word_set.add(word_score_lst[i][0])
+			word_set.add(word_score_lst[len(word_score_lst)-i-1][0])
+	#print word_set
+	#raw_input("enter")
 	return word_set
 
 
@@ -71,7 +75,7 @@ def top_k_words(lexnode, window, k, lang):
 #sens_map: sens_id -> tag nubmer in taglist
 def extract_train_from_lex(lexnode, window, lang):
 	#HERE CONFIG K
-	k = window/2
+	k = 2000000
 	node = lexnode
 	inst_list = node.getElementsByTagName('instance')
 	datalist = []
@@ -108,7 +112,7 @@ def extract_train_from_lex(lexnode, window, lang):
 			#if(len(voc)==1):
 			#	continue
 			#lst = getSynset(voc)
-			if(voc in voca_set)
+			if voc in voca_set:
 				train_dic[voc] = train_dic.get(voc,0) + 1
 			before_count += 1
 		while(after_count<window and after_i<len(after)-1):
@@ -121,7 +125,6 @@ def extract_train_from_lex(lexnode, window, lang):
 				train_dic[voc] = train_dic.get(voc,0) + 1
 			after_count += 1
 		datalist.append(train_dic)
-
 	voca_map = {}
 	train_idx = 0
 	for voc in voca_set:
@@ -251,10 +254,8 @@ def get_vector_from_context(before, after, voca_map, window, lang):
 		voc = before[-1-before_count].lower()
 		#if(len(voc)==1):
 		#	continue
-		lst = getSynset(voc)
-		for voc in lst:
-			if voc in voca_map:
-				vector[voca_map[voc]] += 1
+		if voc in voca_map:
+			vector[voca_map[voc]] += 1
 		before_count += 1
 	after_count = 0
 	after_i = -1
@@ -263,10 +264,8 @@ def get_vector_from_context(before, after, voca_map, window, lang):
 		voc = after[after_count].lower()
 		#if(len(voc)==1):
 		#	continue
-		lst = getSynset(voc)
-		for voc in lst:
-			if voc in voca_map:
-				vector[voca_map[voc]] += 1
+		if voc in voca_map:
+			vector[voca_map[voc]] += 1
 		after_count += 1
 
 	return vector
@@ -277,7 +276,7 @@ if __name__ == '__main__':
 		sys.exit(0)
 	lang = sys.argv[4]
 	alg = sys.argv[5]
-	window = 10
+	window = 40
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')
 	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, alg, 15, lang)

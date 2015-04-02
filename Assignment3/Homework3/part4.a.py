@@ -25,8 +25,8 @@ def extract_train_from_lex(lexnode, window, lang):
 	for inst in inst_list:
 		l = inst.getElementsByTagName('context')[0]
 		sense_id = inst.getElementsByTagName('answer')[0].getAttribute('senseid')
-		if(sense_id=="U"):
-			continue
+		#if(sense_id=="U"):
+		#	continue
 		senslist.append(sense_id)
 		sens_set.add(sense_id)
 		#Could do stemming here.
@@ -57,8 +57,11 @@ def extract_train_from_lex(lexnode, window, lang):
 			voca_set.add(voc)
 			train_dic[voc] = train_dic.get(voc,0) + 1
 			after_count += 1
+		print train_dic
+		raw_input("Enter!")
 		datalist.append(train_dic)
-
+	#print voca_set
+	#raw_input("enter")
 	voca_map = {}
 	train_idx = 0
 	for voc in voca_set:
