@@ -34,8 +34,8 @@ def extract_train_from_lex(lexnode, window, lang):
 			l = l.getElementsByTagName('target')[0]
 		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', '').lower())
 		after = nltk.word_tokenize((l.childNodes[2].nodeValue).replace('\n', '').lower())
-		before = [stemmer.stem(w) for w in before if w.lower() not in stopwords]
-		after = [stemmer.stem(w) for w in after if w.lower() not in stopwords]
+		before = [stemmer.stem(w) for w in before]# if w.lower() not in stopwords]
+		after = [stemmer.stem(w) for w in after]# if w.lower() not in stopwords]
 		train_dic = {}
 		before_count = 0
 		before_i = -1
@@ -91,7 +91,7 @@ def extract_train_from_lex(lexnode, window, lang):
 #give the lex_list, and train all the model for each lex item
 #return a dic, instanceWord -> model
 #for svm, para1 is gamma, para2 is C; for knn, para1 is k, para2 is weight (uniform)
-def train_all(lex_list, window, alg, para1, para2, lang):
+def train_all(lex_list, window, alg, para1, lang):
 	voca_all_map = {}
 	sens_all_map = {}
 	clf_map = {}
@@ -103,7 +103,7 @@ def train_all(lex_list, window, alg, para1, para2, lang):
 		if alg == 'svm':
 			clf = svm.LinearSVC(C=0.1)
 		else: #knn
-			clf = neighbors.KNeighborsClassifier(para1, weights=para2) #para2 is usually 'uniform'
+			clf = neighbors.KNeighborsClassifier(para1) #para2 is usually 'uniform'
 		clf.fit(trainlist, taglist)
 		clf_map[lexelt] = clf
 	return (clf_map, voca_all_map, sens_all_map)
@@ -177,8 +177,8 @@ def get_vector_from_context(before, after, voca_map, window, lang):
 	stopwords = nltk.corpus.stopwords.words(lang.lower())
 	before = nltk.word_tokenize(before.replace('\n',' ').lower())
 	after = nltk.word_tokenize(after.replace('\n',' ').lower())
-	before = [stemmer.stem(w) for w in before if w.lower() not in stopwords]
-	after = [stemmer.stem(w) for w in after if w.lower() not in stopwords]
+	before = [stemmer.stem(w) for w in before]# if w.lower() not in stopwords]
+	after = [stemmer.stem(w) for w in after]# if w.lower() not in stopwords]
 	size = len(voca_map)
 	vector = [0 for i in range(0, size)]
 	before_count = 0
@@ -207,15 +207,14 @@ def get_vector_from_context(before, after, voca_map, window, lang):
 	return vector
 
 if __name__ == '__main__':
-	if len(sys.argv) < 4:
+	if len(sys.argv) != 6:
 		print 'Usage: python *.py [input] [output] [testfile]'
 		sys.exit(0)
-	lang = 'English'
-	if len(sys.argv) == 5:
-		lang = sys.argv[4]
+	lang = sys.argv[4]
+	alg = sys.argv[5]
 	window = 10
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')
-	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, 'svm', 15, 'uniform', lang)
+	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, alg, 15, lang)
 	test_all_output(clf_map, voca_all_map, sens_all_map, sys.argv[3], sys.argv[2], lang)
 
