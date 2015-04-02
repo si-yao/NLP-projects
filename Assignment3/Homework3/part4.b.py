@@ -10,7 +10,7 @@ from nltk.corpus import wordnet as wn
 
 def getSynset(word):
 	sset = wn.synsets(word)
-	lst = [s.name() for s in sset]
+	return lst = [s.name() for s in sset]
 #come into lexelt node and window size, come out train, tag data, and the maps where string mapping to the index.
 #return:
 #trainlist: is 2d array, each row is a vector. 
@@ -51,7 +51,7 @@ def extract_train_from_lex(lexnode, window, lang):
 			voc = before[-1-before_i].lower()
 			#if(len(voc)==1):
 			#	continue
-			lst = getSynset(voc);
+			lst = getSynset(voc)
 			for voc in lst:
 				voca_set.add(voc)
 				train_dic[voc] = train_dic.get(voc,0) + 1
