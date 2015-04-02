@@ -11,7 +11,7 @@ from nltk.corpus import wordnet as wn
 def getSynset(word):
 	stopwords = nltk.corpus.stopwords.words('english')
 	if word in stopwords:
-		return [word]
+		return []
 	sset = wn.synsets(word)
 	sset = set(s.name().split('.')[0] for s in sset)
 	lst = [s for s in sset]
@@ -202,11 +202,10 @@ def get_vector_from_context(before, after, voca_map, window, lang):
 		voc = before[-1-before_count].lower()
 		#if(len(voc)==1):
 		#	continue
-		if not voc in voca_map:
-			continue
 		lst = getSynset(voc)
 		for voc in lst:
-			vector[voca_map[voc]] += 1
+			if voc in voca_map:
+				vector[voca_map[voc]] += 1
 		before_count += 1
 	after_count = 0
 	after_i = -1
@@ -215,8 +214,6 @@ def get_vector_from_context(before, after, voca_map, window, lang):
 		voc = after[after_count].lower()
 		#if(len(voc)==1):
 		#	continue
-		if not voc in voca_map:
-			continue
 		lst = getSynset(voc)
 		for voc in lst:
 			if voc in voca_map:
