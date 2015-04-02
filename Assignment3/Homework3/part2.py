@@ -86,13 +86,13 @@ def extract_train_from_lex(lexnode, window, lang):
 #give the lex_list, and train all the model for each lex item
 #return a dic, instanceWord -> model
 #for svm, para1 is gamma, para2 is C; for knn, para1 is k, para2 is weight (uniform)
-def train_all(lex_list, window, alg, para1, para2):
+def train_all(lex_list, window, alg, para1, para2, lang):
 	voca_all_map = {}
 	sens_all_map = {}
 	clf_map = {}
 	for lex_node in lex_list:
 		lexelt = lex_node.getAttribute('item')
-		(trainlist, taglist, voca_map, sens_map) = extract_train_from_lex(lex_node, window)
+		(trainlist, taglist, voca_map, sens_map) = extract_train_from_lex(lex_node, window, lang)
 		voca_all_map[lexelt] = voca_map
 		sens_all_map[lexelt] = sens_map
 		if alg == 'svm':
@@ -104,7 +104,7 @@ def train_all(lex_list, window, alg, para1, para2):
 	return (clf_map, voca_all_map, sens_all_map)
 
 
-def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output):
+def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output, lang):
 	#for k in clf_map:
 	#print clf_map[k]
 	#raw_input("Enter")
@@ -199,12 +199,15 @@ def get_vector_from_context(before, after, voca_map, window):
 	return vector
 
 if __name__ == '__main__':
-	if len(sys.argv) != 4:
+	if len(sys.argv) < 4:
 		print 'Usage: python *.py [input] [output] [testfile]'
 		sys.exit(0)
+	lang = 'English'
+	if len(sys.argv) == 5:
+		lang = sys.argv[4]
 	window = 10
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')
-	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, 'svm', 15, 'uniform')
-	test_all_output(clf_map, voca_all_map, sens_all_map, sys.argv[3], sys.argv[2])
+	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, 'svm', 15, 'uniform', lang)
+	test_all_output(clf_map, voca_all_map, sens_all_map, sys.argv[3], sys.argv[2], lang)
 
