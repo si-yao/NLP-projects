@@ -108,7 +108,7 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output, lang)
 	#for k in clf_map:
 	#print clf_map[k]
 	#raw_input("Enter")
-	data = parse_data(xml_file)
+	data = parse_data(xml_file, lang)
 	outfile = codecs.open(output, encoding = 'utf-8', mode = 'w')
 	for lexelt, instances in sorted(data.iteritems(), key = lambda d: replace_accented(d[0].split('.')[0])):
 		if(not lexelt in clf_map):
