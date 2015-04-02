@@ -11,7 +11,7 @@ import unicodedata
 #taglist: is an array, each element corresponding to one row in trainlist.
 #voca_map: word -> index in vector
 #sens_map: sens_id -> tag nubmer in taglist
-def extract_train_from_lex(lexnode, window):
+def extract_train_from_lex(lexnode, window, lang):
 	node = lexnode
 	inst_list = node.getElementsByTagName('instance')
 	datalist = []
@@ -26,6 +26,9 @@ def extract_train_from_lex(lexnode, window):
 		senslist.append(sense_id)
 		sens_set.add(sense_id)
 		#Could do stemming here.
+		if(not lang.lower() == 'english')
+			l = l.getElementsByTagName('target')[0]
+
 		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', ''))
 		after = nltk.word_tokenize((l.childNodes[2].nodeValue).replace('\n', ''))
 		train_dic = {}
@@ -134,7 +137,7 @@ def replace_accented(input_str):
     return u"".join([c for c in nkfd_form if not unicodedata.combining(c)])
 
 
-def parse_data(input_file):
+def parse_data(input_file, lang):
 	'''
 	Parse the .xml dev data file
 
@@ -155,6 +158,9 @@ def parse_data(input_file):
 		for inst in inst_list:
 			instance_id = inst.getAttribute('id')
 			l = inst.getElementsByTagName('context')[0]
+			if(not lang.lower() == 'english')
+				l = l.getElementsByTagName('target')[0]
+				
 			before = l.childNodes[0].nodeValue.replace('\n', '')
 			after = l.childNodes[2].nodeValue.replace('\n', '')
 			data[lexelt].append((instance_id, before, after))
