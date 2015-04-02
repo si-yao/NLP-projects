@@ -26,7 +26,7 @@ def extract_train_from_lex(lexnode, window, lang):
 		senslist.append(sense_id)
 		sens_set.add(sense_id)
 		#Could do stemming here.
-		if(not lang.lower() == 'english')
+		if(not lang.lower() == 'english'):
 			l = l.getElementsByTagName('target')[0]
 
 		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', ''))
@@ -158,9 +158,9 @@ def parse_data(input_file, lang):
 		for inst in inst_list:
 			instance_id = inst.getAttribute('id')
 			l = inst.getElementsByTagName('context')[0]
-			if(not lang.lower() == 'english')
+			if(not lang.lower() == 'english'):
 				l = l.getElementsByTagName('target')[0]
-				
+
 			before = l.childNodes[0].nodeValue.replace('\n', '')
 			after = l.childNodes[2].nodeValue.replace('\n', '')
 			data[lexelt].append((instance_id, before, after))
