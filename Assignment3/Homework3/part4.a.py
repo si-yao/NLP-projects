@@ -30,6 +30,8 @@ def extract_train_from_lex(lexnode, window, lang):
 		senslist.append(sense_id)
 		sens_set.add(sense_id)
 		#Could do stemming here.
+		if(not lang.lower() == 'english'):
+			l = l.getElementsByTagName('target')[0]
 		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', '').lower())
 		after = nltk.word_tokenize((l.childNodes[2].nodeValue).replace('\n', '').lower())
 		before = [stemmer.stem(w) for w in before if w.lower() not in stopwords]
@@ -111,7 +113,7 @@ def test_all_output(clf_map, voca_all_map, sens_all_map, xml_file, output, lang)
 	#for k in clf_map:
 	#print clf_map[k]
 	#raw_input("Enter")
-	data = parse_data(xml_file)
+	data = parse_data(xml_file, lang)
 	outfile = codecs.open(output, encoding = 'utf-8', mode = 'w')
 	for lexelt, instances in sorted(data.iteritems(), key = lambda d: replace_accented(d[0].split('.')[0])):
 		if(not lexelt in clf_map):
@@ -140,7 +142,7 @@ def replace_accented(input_str):
     return u"".join([c for c in nkfd_form if not unicodedata.combining(c)])
 
 
-def parse_data(input_file):
+def parse_data(input_file, lang):
 	'''
 	Parse the .xml dev data file
 
@@ -161,6 +163,8 @@ def parse_data(input_file):
 		for inst in inst_list:
 			instance_id = inst.getAttribute('id')
 			l = inst.getElementsByTagName('context')[0]
+			if(not lang.lower() == 'english'):
+				l = l.getElementsByTagName('target')[0]
 			before = l.childNodes[0].nodeValue.replace('\n', '')
 			after = l.childNodes[2].nodeValue.replace('\n', '')
 			data[lexelt].append((instance_id, before, after))
