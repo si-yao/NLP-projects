@@ -9,9 +9,13 @@ from nltk.stem.snowball import SnowballStemmer
 from nltk.corpus import wordnet as wn
 
 def getSynset(word):
+	stopwords = nltk.corpus.stopwords.words('english')
+	if word in stopwords:
+		return [word]
 	sset = wn.synsets(word)
 	sset = set(s.name().split('.')[0] for s in sset)
-	return [s for s in sset]
+	lst = [s for s in sset]
+	return lst
 #come into lexelt node and window size, come out train, tag data, and the maps where string mapping to the index.
 #return:
 #trainlist: is 2d array, each row is a vector. 
