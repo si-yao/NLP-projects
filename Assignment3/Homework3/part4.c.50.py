@@ -244,8 +244,9 @@ def get_vector_from_context(before, after, voca_map, window, lang):
 	stopwords = nltk.corpus.stopwords.words(lang.lower())
 	before = nltk.word_tokenize(before.replace('\n',' ').lower())
 	after = nltk.word_tokenize(after.replace('\n',' ').lower())
-	before = [stemmer.stem(w) for w in before]# if w.lower() not in stopwords]
-	after = [stemmer.stem(w) for w in after]# if w.lower() not in stopwords]
+	if lang.lower()=="english" or lang.lower()=="spanish":
+		before = [stemmer.stem(w) for w in before]# if w.lower() not in stopwords]
+		after = [stemmer.stem(w) for w in after]# if w.lower() not in stopwords]
 	size = len(voca_map)
 	vector = [0 for i in range(0, size)]
 	before_count = 0

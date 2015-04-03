@@ -19,8 +19,9 @@ def extract_train_from_lex(lexnode, window, lang):
 	senslist = []
 	voca_set = set()
 	sens_set = set()
-	stemmer = SnowballStemmer(lang.lower())
-	stopwords = nltk.corpus.stopwords.words(lang.lower())
+	if not lang.lower() == "catalan":
+		stemmer = SnowballStemmer(lang.lower())
+	#stopwords = nltk.corpus.stopwords.words(lang.lower())
 
 	for inst in inst_list:
 		l = inst.getElementsByTagName('context')[0]
@@ -34,8 +35,9 @@ def extract_train_from_lex(lexnode, window, lang):
 			l = l.getElementsByTagName('target')[0]
 		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', '').lower())
 		after = nltk.word_tokenize((l.childNodes[2].nodeValue).replace('\n', '').lower())
-		before = [stemmer.stem(w) for w in before ]#if w.lower() not in stopwords]
-		after = [stemmer.stem(w) for w in after ]#if w.lower() not in stopwords]
+		if not lang.lower() == "catalan":
+			before = [stemmer.stem(w) for w in before ]#if w.lower() not in stopwords]
+			after = [stemmer.stem(w) for w in after ]#if w.lower() not in stopwords]
 		train_dic = {}
 		before_count = 0
 		before_i = -1
@@ -106,7 +108,7 @@ def train_all(lex_list, window, alg, para1, lang):
 		voca_all_map[lexelt] = voca_map
 		sens_all_map[lexelt] = sens_map
 		if alg == 'svm':
-			clf = svm.LinearSVC(C=10)
+			clf = svm.LinearSVC(C=0.1)
 		else: #knn
 			clf = neighbors.KNeighborsClassifier(para1) #para2 is usually 'uniform'
 		clf.fit(trainlist, taglist)
@@ -178,12 +180,14 @@ def parse_data(input_file, lang):
 
 
 def get_vector_from_context(before, after, voca_map, window, lang):
-	stemmer = SnowballStemmer(lang.lower())
-	stopwords = nltk.corpus.stopwords.words(lang.lower())
+	if not lang.lower() == "catalan":
+		stemmer = SnowballStemmer(lang.lower())
+	#stopwords = nltk.corpus.stopwords.words(lang.lower())
 	before = nltk.word_tokenize(before.replace('\n',' ').lower())
 	after = nltk.word_tokenize(after.replace('\n',' ').lower())
-	before = [stemmer.stem(w) for w in before ]#if w.lower() not in stopwords]
-	after = [stemmer.stem(w) for w in after ]#if w.lower() not in stopwords]
+	if not lang.lower() == "catalan":
+		before = [stemmer.stem(w) for w in before ]#if w.lower() not in stopwords]
+		after = [stemmer.stem(w) for w in after ]#if w.lower() not in stopwords]
 	size = len(voca_map)
 	vector = [0 for i in range(0, size)]
 	before_count = 0
