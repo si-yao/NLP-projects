@@ -99,7 +99,7 @@ def train_all(lex_list, window, alg, para1, para2, lang):
 		voca_all_map[lexelt] = voca_map
 		sens_all_map[lexelt] = sens_map
 		if alg == 'svm':
-			clf = svm.LinearSVC(C=0.1)
+			clf = svm.LinearSVC()
 		else: #knn
 			clf = neighbors.KNeighborsClassifier(para1, weights=para2) #para2 is usually 'uniform'
 		clf.fit(trainlist, taglist)
@@ -183,9 +183,8 @@ def get_vector_from_context(before, after, voca_map, window):
 		voc = before[-1-before_count].lower()
 		#if(len(voc)==1):
 		#	continue
-		if not voc in voca_map:
-			continue
-		vector[voca_map[voc]] += 1
+		if voc in voca_map:
+			vector[voca_map[voc]] += 1
 		before_count += 1
 	after_count = 0
 	after_i = -1
@@ -194,23 +193,22 @@ def get_vector_from_context(before, after, voca_map, window):
 		voc = after[after_count].lower()
 		#if(len(voc)==1):
 		#	continue
-		if not voc in voca_map:
-			continue
-		vector[voca_map[voc]] += 1
+		if voc in voca_map:
+			vector[voca_map[voc]] += 1
 		after_count += 1
 
 	return vector
 
 if __name__ == '__main__':
-	if len(sys.argv) < 4:
-		print 'Usage: python *.py [input] [output] [testfile] [lang]'
+	if len(sys.argv) != 6:
+		print 'Usage: python *.py [input] [output] [testfile] [lang] [alg]'
 		sys.exit(0)
-	lang = 'English'
-	if len(sys.argv) == 5:
-		lang = sys.argv[4]
-	window = 5
+
+	lang = sys.argv[4]
+	alg = sys.argv[5]
+	window = 10
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')
-	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, 'svm', 15, 'uniform', lang)
+	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, alg, 15, 'uniform', lang)
 	test_all_output(clf_map, voca_all_map, sens_all_map, sys.argv[3], sys.argv[2], window, lang)
 

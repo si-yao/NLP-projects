@@ -6,67 +6,6 @@ import codecs
 import sys
 import unicodedata
 from nltk.stem.snowball import SnowballStemmer
-from nltk.corpus import wordnet as wn
-
-def getSynset(word):
-	stopwords = nltk.corpus.stopwords.words('english')
-	if word in stopwords:
-		return []
-	sset = wn.synsets(word)
-	sset = set(s.name().split('.')[0] for s in sset)
-	lst = [s for s in sset]
-	return lst
-
-
-
-def top_k_words(lexnode, window, k, lang):
-	if lang.lower()=="english" or lang.lower()=="spanish":
-		stemmer = SnowballStemmer(lang.lower())
-	wordcount_map = {}
-	sens_wordcount_map = {}
-	inst_list = lexnode.getElementsByTagName('instance')
-	for inst in inst_list:
-		l = inst.getElementsByTagName('context')[0]
-		sense_id = inst.getElementsByTagName('answer')[0].getAttribute('senseid')
-		if not sense_id in sens_wordcount_map:
-			sens_wordcount_map[sense_id] = {}
-		if(not lang.lower() == 'english'):
-			l = l.getElementsByTagName('target')[0]
-		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', '').lower())
-		after = nltk.word_tokenize((l.childNodes[2].nodeValue).replace('\n', '').lower())
-		if lang.lower()=="english" or lang.lower()=="spanish":
-			before = [stemmer.stem(w) for w in before]# if w.lower() not in stopwords]
-			after = [stemmer.stem(w) for w in after]# if w.lower() not in stopwords]
-		for i in range(0, window):
-			if i < len(before):
-				word = before[-1-i]
-				wordcount_map[word] = wordcount_map.get(word, 0) + 1
-				sens_wordcount_map[sense_id][word] = sens_wordcount_map[sense_id].get(word, 0) + 1
-			if i < len(after):
-				word = after[i]
-				wordcount_map[word] = wordcount_map.get(word, 0) + 1
-				sens_wordcount_map[sense_id][word] = sens_wordcount_map[sense_id].get(word, 0) + 1
-	word_set = set()
-	for sense in sens_wordcount_map:
-		wc_map = sens_wordcount_map[sense]
-		word_score_lst = []
-		for word in wc_map:
-			p = wc_map[word]/(wordcount_map[word]-wc_map[word]+0.00001)
-			word_score_lst.append(tuple([word, p]))
-		word_score_lst = sorted(word_score_lst, key=lambda e: e[1])
-		#print word_score_lst
-		for i in range(0,k):
-			if(i>=len(word_score_lst)):
-				break
-			word_set.add(word_score_lst[len(word_score_lst)-i-1][0])
-	#print word_set
-	#raw_input("enter")
-	return word_set
-
-
-
-
-
 #come into lexelt node and window size, come out train, tag data, and the maps where string mapping to the index.
 #return:
 #trainlist: is 2d array, each row is a vector. 
@@ -74,16 +13,14 @@ def top_k_words(lexnode, window, k, lang):
 #voca_map: word -> index in vector
 #sens_map: sens_id -> tag nubmer in taglist
 def extract_train_from_lex(lexnode, window, lang):
-	#HERE CONFIG K
 	node = lexnode
 	inst_list = node.getElementsByTagName('instance')
 	datalist = []
 	senslist = []
-	voca_set = top_k_words(lexnode, window, k, lang)
+	voca_set = set()
 	sens_set = set()
-	if lang.lower()=="english" or lang.lower()=="spanish":
-		stemmer = SnowballStemmer(lang.lower())
-	#stopwords = nltk.corpus.stopwords.words(lang.lower())
+	stemmer = SnowballStemmer(lang.lower())
+	stopwords = nltk.corpus.stopwords.words(lang.lower())
 
 	for inst in inst_list:
 		l = inst.getElementsByTagName('context')[0]
@@ -97,9 +34,8 @@ def extract_train_from_lex(lexnode, window, lang):
 			l = l.getElementsByTagName('target')[0]
 		before = nltk.word_tokenize((l.childNodes[0].nodeValue).replace('\n', '').lower())
 		after = nltk.word_tokenize((l.childNodes[2].nodeValue).replace('\n', '').lower())
-		if lang.lower()=="english" or lang.lower()=="spanish":
-			before = [stemmer.stem(w) for w in before]# if w.lower() not in stopwords]
-			after = [stemmer.stem(w) for w in after]# if w.lower() not in stopwords]
+		before = [w for w in before if w.lower() not in stopwords]
+		after = [w for w in after if w.lower() not in stopwords]
 		train_dic = {}
 		before_count = 0
 		before_i = -1
@@ -110,22 +46,22 @@ def extract_train_from_lex(lexnode, window, lang):
 			voc = before[-1-before_i].lower()
 			#if(len(voc)==1):
 			#	continue
-			#lst = getSynset(voc)
-			if voc in voca_set:
-				train_dic[voc] = train_dic.get(voc,0) + 1
+			voca_set.add(voc)
+			train_dic[voc] = train_dic.get(voc,0) + 1
 			before_count += 1
 		while(after_count<window and after_i<len(after)-1):
 			after_i += 1
 			voc = after[after_i].lower()
 			#if(len(voc)==1):
 			#	continue
-			#lst = getSynset(voc);
-			if voc in voca_set:
-				train_dic[voc] = train_dic.get(voc,0) + 1
+			voca_set.add(voc)
+			train_dic[voc] = train_dic.get(voc,0) + 1
 			after_count += 1
+		#print train_dic
+		#raw_input("Enter!")
 		datalist.append(train_dic)
 	#print len(voca_set)
-	#raw_input("Enter!")
+	#raw_input("enter")
 	voca_map = {}
 	train_idx = 0
 	for voc in voca_set:
@@ -168,7 +104,7 @@ def train_all(lex_list, window, alg, para1, lang):
 		voca_all_map[lexelt] = voca_map
 		sens_all_map[lexelt] = sens_map
 		if alg == 'svm':
-			clf = svm.LinearSVC()
+			clf = svm.LinearSVC(C=10)
 		else: #knn
 			clf = neighbors.KNeighborsClassifier(para1) #para2 is usually 'uniform'
 		clf.fit(trainlist, taglist)
@@ -244,8 +180,8 @@ def get_vector_from_context(before, after, voca_map, window, lang):
 	stopwords = nltk.corpus.stopwords.words(lang.lower())
 	before = nltk.word_tokenize(before.replace('\n',' ').lower())
 	after = nltk.word_tokenize(after.replace('\n',' ').lower())
-	before = [stemmer.stem(w) for w in before]# if w.lower() not in stopwords]
-	after = [stemmer.stem(w) for w in after]# if w.lower() not in stopwords]
+	before = [w for w in before if w.lower() not in stopwords]
+	after = [w for w in after if w.lower() not in stopwords]
 	size = len(voca_map)
 	vector = [0 for i in range(0, size)]
 	before_count = 0
@@ -272,12 +208,11 @@ def get_vector_from_context(before, after, voca_map, window, lang):
 	return vector
 
 if __name__ == '__main__':
-	if len(sys.argv) != 7:
-		print 'Usage: python *.py [input] [output] [testfile] [lang] [alg] [topk]'
+	if len(sys.argv) != 6:
+		print 'Usage: python *.py [input] [output] [testfile]'
 		sys.exit(0)
 	lang = sys.argv[4]
 	alg = sys.argv[5]
-	k = int(sys.argv[6])
 	window = 10
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')

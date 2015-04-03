@@ -278,7 +278,7 @@ if __name__ == '__main__':
 	lang = sys.argv[4]
 	alg = sys.argv[5]
 	k = int(sys.argv[6])
-	window = 10
+	window = 25
 	xmldoc = minidom.parse(sys.argv[1])
 	lex_list = xmldoc.getElementsByTagName('lexelt')
 	(clf_map, voca_all_map, sens_all_map) = train_all(lex_list, window, alg, 15, lang)
