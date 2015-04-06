@@ -108,7 +108,7 @@ def train_all(lex_list, window, alg, para1, lang):
 		voca_all_map[lexelt] = voca_map
 		sens_all_map[lexelt] = sens_map
 		if alg == 'svm':
-			clf = svm.LinearSVC(C=0.1)
+			clf = svm.LinearSVC()
 		else: #knn
 			clf = neighbors.KNeighborsClassifier(para1) #para2 is usually 'uniform'
 		clf.fit(trainlist, taglist)
