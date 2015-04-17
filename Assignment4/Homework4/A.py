@@ -27,11 +27,11 @@ def save_model_output(aligned_sents, model, file_name):
     fout = open(file_name, 'w');
     for i in range(0,20):
         rst = model.align(aligned_sents[i]);
-        fout.write(rst.words);
+        fout.write(" ".join(rst.words));
         fout.write("\n");
-        fout.write(rst.mots);
+        fout.write(r" ".join(st.mots));
         fout.write("\n");
-        fout.write(rst.alignment);
+        fout.write(" ".join(rst.alignment));
         fout.write("\n\n");
 
 def main(aligned_sents):
