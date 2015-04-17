@@ -1,4 +1,5 @@
 import nltk
+import codecs
 from nltk.align import AlignedSent
 from nltk.align import Alignment
 from nltk.align.ibm1 import IBMModel1
@@ -24,7 +25,7 @@ def compute_avg_aer(aligned_sents, model, n):
 #       aligned_sents and saves the sentences and their alignments
 #       to file_name. Use the format specified in the assignment.
 def save_model_output(aligned_sents, model, file_name):
-    fout = open(file_name, 'w');
+    fout = codecs.open(file_name, encoding = 'utf-8', mode = 'w')
     for i in range(0,20):
         rst = model.align(aligned_sents[i]);
         fout.write(" ".join(rst.words));
