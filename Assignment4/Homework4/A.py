@@ -10,7 +10,7 @@ def create_ibm1(aligned_sents):
 
 # TODO: Initialize IBM Model 2 and return the model.
 def create_ibm2(aligned_sents):
-    return IBMModel2(aligned_sents, 10);
+    return IBMModel2(aligned_sents, 30);
 
 # TODO: Compute the average AER for the first n sentences
 #       in aligned_sents using model. Return the average AER.
