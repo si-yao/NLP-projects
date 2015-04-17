@@ -1,7 +1,7 @@
 from nltk.corpus import comtrans
 import A
-import B
-import EC
+#import B
+#import EC
 
 if __name__ == '__main__':
     aligned_sents = comtrans.aligned_sents()[:350]
