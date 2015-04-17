@@ -12,7 +12,7 @@ def create_ibm2(aligned_sents):
 #       in aligned_sents using model. Return the average AER.
 def compute_avg_aer(aligned_sents, model, n):
     count = 0;
-    for(i in range(0,n)):
+    for i in range(0,n):
         rst = model.align(aligned_sents[i]);
         count += rst.alignment_error_rate(aligned_sents[i]);
     return 1.0*count/n;
@@ -22,7 +22,7 @@ def compute_avg_aer(aligned_sents, model, n):
 #       to file_name. Use the format specified in the assignment.
 def save_model_output(aligned_sents, model, file_name):
     fout = open(file_name, 'w');
-    for(i in range(0,20)):
+    for i in range(0,20):
         rst = model.align(aligned_sents[i]);
         fout.write(rst.words+"\n");
         fout.write(rst.mots+"\n");
