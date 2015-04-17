@@ -1,5 +1,8 @@
 import nltk
-
+from nltk.align import AlignedSent
+from nltk.align import Alignment
+from nltk.align.ibm1 import IBMModel1
+from nltk.align.ibm2 import IBMModel2
 # TODO: Initialize IBM Model 1 and return the model.
 def create_ibm1(aligned_sents):
     return IBMModel1(aligned_sents, 10);
