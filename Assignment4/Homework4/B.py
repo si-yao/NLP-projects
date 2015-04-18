@@ -130,6 +130,7 @@ class BerkeleyAligner():
                 total_e[en_word] = 0
                 for i in range(0, l_f+1):
                     total_e[en_word] += t_ef[en_word][fr_set[i]] * align[i][j][l_e][l_f]
+                    print(align[i][j][l_e][l_f])
 
             # collect counts
             for j in range(1, l_e+1):
