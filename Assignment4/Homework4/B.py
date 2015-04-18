@@ -1,4 +1,5 @@
 import nltk
+from nltk.align.ibm1 import IBMModel1
 import A
 
 class BerkeleyAligner():
