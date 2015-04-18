@@ -102,14 +102,14 @@ class BerkeleyAligner():
             fr_set = [None] + alignSent.mots
             l_f = len(fr_set) - 1
             l_e = len(en_set)
-            initial_value = 1 / (l_f + 1)
+            initial_value = 1.0 / (l_f + 1)
             for i in range(0, l_f+1):
                 for j in range(1, l_e+1):
                     align[i][j][l_e][l_f] = initial_value
         return t_ef, align
 
     def EMIteration(self, t_ef, align, en_vocab, fr_vocab, align_sents):
-        print("A iteration")
+        #print("A iteration")
         count_ef = defaultdict(lambda: defaultdict(float))
         total_f = defaultdict(float)
 
@@ -130,7 +130,7 @@ class BerkeleyAligner():
                 total_e[en_word] = 0
                 for i in range(0, l_f+1):
                     total_e[en_word] += t_ef[en_word][fr_set[i]] * align[i][j][l_e][l_f]
-                    print(align[i][j][l_e][l_f])
+                    #print(align[i][j][l_e][l_f])
 
             # collect counts
             for j in range(1, l_e+1):
