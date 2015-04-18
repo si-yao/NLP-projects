@@ -67,7 +67,7 @@ class BerkeleyAligner():
         total_f = defaultdict(float)
         for e in t_ef:
             for f in t_ef[e]:
-                comp = t_ef_inv.get(f, {}).get(e, 0.0)
+                comp = t_ef_inv[f][e]
                 t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
                 total_f[f] += t_ef_new[e][f]
         for e in t_ef_new:
@@ -109,6 +109,7 @@ class BerkeleyAligner():
         return t_ef, align
 
     def EMIteration(self, t_ef, align, en_vocab, fr_vocab, align_sents):
+        print("A iteration")
         count_ef = defaultdict(lambda: defaultdict(float))
         total_f = defaultdict(float)
 
