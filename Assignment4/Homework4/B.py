@@ -91,7 +91,7 @@ class BerkeleyAligner():
 
 
     def initParam(self, align_sents):
-        ibm1 = IBMModel1(align_sents, 10)
+        ibm1 = IBMModel1(align_sents, 5)
         t_ef = ibm1.probabilities
 
         align = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0))))
