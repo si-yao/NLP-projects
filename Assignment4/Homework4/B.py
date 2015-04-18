@@ -40,19 +40,19 @@ class BerkeleyAligner():
             fr_vocab.update(alignSent.mots)
         aligned_sents_inv = [e.invert() for e in aligned_sents]
 
-        t_ef, align = initParam(aligned_sents)
-        t_ef_inv, align_inv = initParam(aligned_sents_inv)
+        t_ef, align = self.initParam(aligned_sents)
+        t_ef_inv, align_inv = self.initParam(aligned_sents_inv)
         for i in range(0, num_iters):
             #Train the original one
             fr_vocab.add(None)
-            t_ef, align = EMIteration(t_ef, align, en_vocab, fr_vocab, aligned_sents)
+            t_ef, align = self.EMIteration(t_ef, align, en_vocab, fr_vocab, aligned_sents)
             fr_vocab.remove(None)
             #Train the inverse one
             en_vocab.add(None)
-            t_ef_inv, align_inv = EMIteration(t_ef_inv, align_inv, fr_vocab, en_vocab, aligned_sents_inv)
+            t_ef_inv, align_inv = self.EMIteration(t_ef_inv, align_inv, fr_vocab, en_vocab, aligned_sents_inv)
             en_vocab.remove(None)
-            t_ef_new, align_new = agree(t_ef, align, t_ef_inv, align_inv)
-            t_ef_inv_new, align_inv_new = agree(t_ef_inv, align_inv, t_ef, align)
+            t_ef_new, align_new = self.agree(t_ef, align, t_ef_inv, align_inv)
+            t_ef_inv_new, align_inv_new = self.agree(t_ef_inv, align_inv, t_ef, align)
             t_ef, align = t_ef_new, align_new
             t_ef_inv, align_inv = t_ef_inv_new, align_inv_new
 
