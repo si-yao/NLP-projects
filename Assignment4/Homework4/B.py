@@ -59,7 +59,7 @@ class BerkeleyAligner():
         return t_ef, align
 
 
-    def agree(t_ef, align, t_ef_inv, align_inv):
+    def agree(self, t_ef, align, t_ef_inv, align_inv):
         t_ef_new = defaultdict(lambda: defaultdict(lambda: 0.0))
         t_ef_inv_new = defaultdict(lambda: defaultdict(lambda: 0.0))
         total_f = defaultdict(float)
@@ -88,7 +88,7 @@ class BerkeleyAligner():
         return t_ef_new, align_new
 
 
-    def initParam(align_sents):
+    def initParam(self, align_sents):
         ibm1 = IBMModel1(align_sents, 10)
         t_ef = ibm1.probabilities
 
@@ -106,7 +106,7 @@ class BerkeleyAligner():
                     align[i][j][l_e][l_f] = initial_value
         return t_ef, align
 
-    def EMIteration(t_ef, align, en_vocab, fr_vocab, align_sents):
+    def EMIteration(self, t_ef, align, en_vocab, fr_vocab, align_sents):
         count_ef = defaultdict(lambda: defaultdict(float))
         total_f = defaultdict(float)
 
