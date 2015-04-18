@@ -19,11 +19,11 @@ class BerkeleyAligner():
         for j, en_word in enumerate(align_sent.words):
             
             # Initialize the maximum probability with Null token
-            max_align_prob = (self.probabilities[en_word][None]*self.alignments[0][j+1][l_e][l_f], None)
+            max_align_prob = (self.t[en_word][None]*self.q[0][j+1][l_e][l_f], None)
             for i, fr_word in enumerate(align_sent.mots):
                 # Find out the maximum probability
                 max_align_prob = max(max_align_prob,
-                    (self.probabilities[en_word][fr_word]*self.alignments[i+1][j+1][l_e][l_f], i))
+                    (self.t[en_word][fr_word]*self.q[i+1][j+1][l_e][l_f], i))
 
             # If the maximum probability is not Null token,
             # then append it to the alignment. 
