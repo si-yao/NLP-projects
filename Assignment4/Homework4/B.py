@@ -63,17 +63,19 @@ class BerkeleyAligner():
 
 
     def agree(self, t_ef, align, t_ef_inv, align_inv):
-        t_ef_new = defaultdict(lambda: defaultdict(lambda: 0.0))
-        t_ef_inv_new = defaultdict(lambda: defaultdict(lambda: 0.0))
-        total_f = defaultdict(float)
-        for e in t_ef:
-            for f in t_ef[e]:
-                comp = t_ef_inv[f][e]
-                t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
-                total_f[f] += t_ef_new[e][f]
-        for e in t_ef_new:
-            for f in t_ef_new[e]:
-                t_ef_new[e][f] = t_ef_new[e][f]/total_f[f]
+        #t_ef_new = defaultdict(lambda: defaultdict(lambda: 0.0))
+        #t_ef_inv_new = defaultdict(lambda: defaultdict(lambda: 0.0))
+        #total_f = defaultdict(float)
+        #for e in t_ef:
+        #    for f in t_ef[e]:
+        #        comp = t_ef_inv[f][e]
+        #        t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
+        #        total_f[f] += t_ef_new[e][f]
+        #for e in t_ef_new:
+        #    for f in t_ef_new[e]:
+        #        t_ef_new[e][f] = t_ef_new[e][f]/total_f[f]
+
+
         align_new = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0))))
         total_align = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0)))
         for f_i in align:
@@ -88,7 +90,7 @@ class BerkeleyAligner():
                 for l_e in align[f_i][e_i]:
                     for l_f in align[f_i][e_i][l_e]:
                         align_new[f_i][e_i][l_e][l_f] /= total_align[e_i][l_e][l_f]
-        return t_ef_new, align_new
+        return t_ef, align_new
 
 
     def initParam(self, align_sents):
