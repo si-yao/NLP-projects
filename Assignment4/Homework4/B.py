@@ -48,21 +48,20 @@ class BerkeleyAligner():
         for i in range(0, num_iters):
             #Train the original one
             fr_vocab.add(None)
-            t_ef, align = self.EMIteration(t_ef, align, en_vocab, fr_vocab, aligned_sents)
+            t_ef, align, count_align, total_align = self.EMIteration(t_ef, align, en_vocab, fr_vocab, aligned_sents)
             fr_vocab.remove(None)
             #Train the inverse one
             en_vocab.add(None)
-            t_ef_inv, align_inv = self.EMIteration(t_ef_inv, align_inv, fr_vocab, en_vocab, aligned_sents_inv)
+            t_ef_inv, align_inv, count_align_inv, total_align_inv = self.EMIteration(t_ef_inv, align_inv, fr_vocab, en_vocab, aligned_sents_inv)
             en_vocab.remove(None)
-            t_ef_new, align_new = self.agree(t_ef, align, t_ef_inv, align_inv)
-            t_ef_inv_new, align_inv_new = self.agree(t_ef_inv, align_inv, t_ef, align)
-            t_ef, align = t_ef_new, align_new
-            t_ef_inv, align_inv = t_ef_inv_new, align_inv_new
+
+            align = self.align_agree(count_align, count_align_inv)
+            align_inv = self.align_agree(count_align_inv, count_align)
 
         return t_ef, align
 
 
-    def agree(self, t_ef, align, t_ef_inv, align_inv):
+    def align_agree(self, count_align, count_align_inv):
         #t_ef_new = defaultdict(lambda: defaultdict(lambda: 0.0))
         #t_ef_inv_new = defaultdict(lambda: defaultdict(lambda: 0.0))
         #total_f = defaultdict(float)
@@ -78,19 +77,18 @@ class BerkeleyAligner():
 
         align_new = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0))))
         total_align = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0)))
-        for f_i in align:
-            for e_i in align[f_i]:
-                for l_e in align[f_i][e_i]:
-                    for l_f in align[f_i][e_i][l_e]:
-                        comp = align_inv[e_i][f_i][l_f][l_e]
-                        align_new[f_i][e_i][l_e][l_f] = (align[f_i][e_i][l_e][l_f]+comp)/2.0
+        for f_i in count_align:
+            for e_i in count_align[f_i]:
+                for l_e in count_align[f_i][e_i]:
+                    for l_f in count_align[f_i][e_i][l_e]:
+                        align_new[f_i][e_i][l_e][l_f] = count_align[f_i][e_i][l_e][l_f]+count_align_inv[e_i][f_i][l_f][l_e]
                         total_align[e_i][l_e][l_f] += align_new[f_i][e_i][l_e][l_f]
-        for f_i in align:
-            for e_i in align[f_i]:
-                for l_e in align[f_i][e_i]:
-                    for l_f in align[f_i][e_i][l_e]:
+        for f_i in count_align:
+            for e_i in count_align[f_i]:
+                for l_e in count_align[f_i][e_i]:
+                    for l_f in count_align[f_i][e_i][l_e]:
                         align_new[f_i][e_i][l_e][l_f] /= total_align[e_i][l_e][l_f]
-        return t_ef, align_new
+        return align_new
 
 
     def initParam(self, align_sents):
@@ -187,7 +185,7 @@ class BerkeleyAligner():
             for i in range(0, l_f+1):
                 for j in range(1, l_e+1):
                     align[i][j][l_e][l_f] = count_align[i][j][l_e][l_f] / total_align[j][l_e][l_f]
-        return t_ef, align
+        return t_ef, align, count_align, total_align
 
 def main(aligned_sents):
     ba = BerkeleyAligner(aligned_sents, 10)
