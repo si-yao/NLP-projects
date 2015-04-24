@@ -94,8 +94,8 @@ class BerkeleyAligner():
 
 
     def initParam(self, align_sents):
-        ibm1 = IBMModel1(align_sents, 5)
-        t_ef = ibm1.probabilities
+        #ibm1 = IBMModel1(align_sents, 5)
+        #t_ef = ibm1.probabilities
 
         align = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0))))
         # Initialize the distribution of alignment probability,
@@ -109,6 +109,10 @@ class BerkeleyAligner():
             for i in range(0, l_f+1):
                 for j in range(1, l_e+1):
                     align[i][j][l_e][l_f] = initial_value
+
+        init_prob = 1 / len(l_e)
+        # Create the translation model with initial probability
+        t_ef = defaultdict(lambda: defaultdict(lambda: init_prob))
         return t_ef, align
 
     def EMIteration(self, t_ef, align, en_vocab, fr_vocab, align_sents):
