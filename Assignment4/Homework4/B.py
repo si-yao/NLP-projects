@@ -54,15 +54,15 @@ class BerkeleyAligner():
             en_vocab.add(None)
             t_ef_inv, align_inv = self.EMIteration(t_ef_inv, align_inv, fr_vocab, en_vocab, aligned_sents_inv)
             en_vocab.remove(None)
-            t_ef_new, align_new = self.agree(t_ef, align, t_ef_inv, align_inv)
-            t_ef_inv_new, align_inv_new = self.agree(t_ef_inv, align_inv, t_ef, align)
-            t_ef, align = t_ef_new, align_new
-            t_ef_inv, align_inv = t_ef_inv_new, align_inv_new
+            align_new = self.agree(align, align_inv)
+            align_inv_new = self.agree(align_inv, align)
+            align = align_new
+            align_inv = align_inv_new
 
         return t_ef, align
 
 
-    def agree(self, t_ef, align, t_ef_inv, align_inv):
+    def agree(self, align, align_inv):
         #t_ef_new = defaultdict(lambda: defaultdict(lambda: 0.0))
         #t_ef_inv_new = defaultdict(lambda: defaultdict(lambda: 0.0))
         #total_f = defaultdict(float)
@@ -90,7 +90,7 @@ class BerkeleyAligner():
                 for l_e in align[f_i][e_i]:
                     for l_f in align[f_i][e_i][l_e]:
                         align_new[f_i][e_i][l_e][l_f] /= total_align[e_i][l_e][l_f]
-        return t_ef, align_new
+        return align_new
 
 
     def initParam(self, align_sents):
