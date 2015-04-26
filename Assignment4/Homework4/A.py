@@ -35,9 +35,9 @@ def compare(aligned_sents, model1, model2):
 
         print("Gold:");
         print(aligned_sents[i].alignment);
-        print("Model1:");
+        print("Model1:"+ str(aer1));
         print(rst1);
-        print("Model2:");
+        print("Model2:"+ str(aer2));
         print(rst2);
 
 
