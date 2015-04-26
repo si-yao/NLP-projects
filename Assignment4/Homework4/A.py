@@ -21,6 +21,26 @@ def compute_avg_aer(aligned_sents, model, n):
         count += rst.alignment_error_rate(aligned_sents[i]);
     return 1.0*count/n;
 
+
+def compare(aligned_sents, model1, model2):
+    for i in range(0,10):
+        rst1 = model1.align(aligned_sents[i]);
+        rst2 = model2.align(aligned_sents[i]);
+        aer1 = rst1.alignment_error_rate(aligned_sents[i]);
+        aer2 = rst2.alignment_error_rate(aligned_sents[i]);
+        if(aer1<aer2):
+            print("Model1 is BETTER HERE:");
+        else if(aer1>aer2):
+            print("Model2 is BETTER HERE:");
+        print("Gold:");
+        print(aligned_sents[i]);
+        print("Model1:");
+        print(rst1);
+        print("Model2:");
+        print(rst2);
+        print("\n");
+
+
 # TODO: Computes the alignments for the first 20 sentences in
 #       aligned_sents and saves the sentences and their alignments
 #       to file_name. Use the format specified in the assignment.
@@ -52,3 +72,6 @@ def main(aligned_sents):
     print ('IBM Model 2')
     print ('---------------------------')
     print('Average AER: {0:.3f}\n'.format(avg_aer))
+
+    compare(aligned_sents, ibm1, ibm2);
+    
