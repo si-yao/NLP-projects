@@ -30,8 +30,9 @@ def compare(aligned_sents, model1, model2):
         aer2 = rst2.alignment_error_rate(aligned_sents[i]);
         if(aer1<aer2):
             print("Model1 is BETTER HERE:");
-        else if(aer1>aer2):
+        elif(aer1>aer2):
             print("Model2 is BETTER HERE:");
+
         print("Gold:");
         print(aligned_sents[i]);
         print("Model1:");
