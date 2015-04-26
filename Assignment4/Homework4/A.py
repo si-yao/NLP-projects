@@ -35,18 +35,10 @@ def compare(aligned_sents, model1, model2):
 
         print("Gold:");
         print(aligned_sents[i]);
-        print(" ".join(aligned_sents[i].words));
-        print(" ".join(aligned_sents[i].mots));
-        print(" ".join([str(e[0])+"-"+str(e[1]) for e in aligned_sents[i].alignment]));
         print("Model1:");
-        print(" ".join(rst1.words));
-        print(" ".join(rst1.mots));
-        print(" ".join([str(e[0])+"-"+str(e[1]) for e in rst1.alignment]));
+        print(rst1);
         print("Model2:");
         print(rst2);
-        print(" ".join(rst2.words));
-        print(" ".join(rst2.mots));
-        print(" ".join([str(e[0])+"-"+str(e[1]) for e in rst2.alignment]));
 
 
 # TODO: Computes the alignments for the first 20 sentences in
