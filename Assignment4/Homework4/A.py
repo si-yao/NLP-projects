@@ -34,6 +34,7 @@ def save_model_output(aligned_sents, model, file_name):
         fout.write("\n");
         fout.write(" ".join([str(e[0])+"-"+str(e[1]) for e in rst.alignment]));
         fout.write("\n\n");
+    fout.close();
 
 def main(aligned_sents):
     ibm1 = create_ibm1(aligned_sents)
