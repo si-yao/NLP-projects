@@ -193,6 +193,16 @@ class BerkeleyAligner():
                     align[i][j][l_e][l_f] = count_align[i][j][l_e][l_f] / total_align[j][l_e][l_f]
         return t_ef, align
 
+def compare(aligned_sents, model):
+    for i in range(0,10):
+        rst1 = model.align(aligned_sents[i]);
+        aer1 = rst1.alignment_error_rate(aligned_sents[i]);
+        print("Gold:");
+        print(aligned_sents[i].alignment);
+        print("Model1:"+ str(aer1));
+        print(rst1);
+
+
 def main(aligned_sents):
     ba = BerkeleyAligner(aligned_sents, 20)
     A.save_model_output(aligned_sents, ba, "ba.txt")
@@ -201,3 +211,5 @@ def main(aligned_sents):
     print ('Berkeley Aligner')
     print ('---------------------------')
     print('Average AER: {0:.3f}\n'.format(avg_aer))
+
+    compare(aligned_sents, ba)
