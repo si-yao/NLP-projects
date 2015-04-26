@@ -52,7 +52,7 @@ def save_model_output(aligned_sents, model, file_name):
         fout.write("\n");
         fout.write(" ".join(rst.mots));
         fout.write("\n");
-        fout.write(rst.alignment);
+        fout.write(str(rst.alignment));
         fout.write("\n\n");
     fout.close();
 
