@@ -30,7 +30,7 @@ def save_model_output(aligned_sents, model, file_name):
         rst = model.align(aligned_sents[i]);
         fout.write(" ".join(rst.words));
         fout.write("\n");
-        fout.write(r" ".join(rst.mots));
+        fout.write(" ".join(rst.mots));
         fout.write("\n");
         fout.write(" ".join([str(e[0])+"-"+str(e[1]) for e in rst.alignment]));
         fout.write("\n\n");
