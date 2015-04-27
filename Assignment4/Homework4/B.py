@@ -72,6 +72,8 @@ class BerkeleyAligner():
             for f in t_ef[e]:
                 comp = t_ef_inv[f][e]
                 t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
+                if(t_ef_new[e][f] == 0.0):
+                    print("is zero")
                 total_f[f] += t_ef_new[e][f]
         #for e in t_ef:
         #    for f in t_ef[e]:
