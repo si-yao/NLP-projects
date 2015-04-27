@@ -72,10 +72,10 @@ class BerkeleyAligner():
         for e in t_ef:
             for f in t_ef[e]:
                 comp = t_ef_inv[f][e]
-                print("comp is "+ str(comp))
-                print("this is "+ str(t_ef[e][f]))
+                #print("comp is "+ str(comp))
+                #print("this is "+ str(t_ef[e][f]))
                 t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
-                print("new is "+ str(t_ef_new[e][f]))
+                #print("new is "+ str(t_ef_new[e][f]))
                 total_f[f] += t_ef_new[e][f]
         for e in t_ef:
             for f in t_ef[e]:
