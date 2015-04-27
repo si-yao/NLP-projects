@@ -8,8 +8,10 @@ class BetterBerkeleyAligner():
         self.t, self.q = self.train(align_sents, num_iter)
 
     def align(self, align_sent):
+        return None, None;
 
     def train(self, aligned_sents, num_iters):
+        return None, None;
 
 def main(aligned_sents):
     ba = BetterBerkeleyAligner(aligned_sents, 20)
