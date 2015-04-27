@@ -61,6 +61,7 @@ class BerkeleyAligner():
             t_ef = t_ef_new
             t_ef_inv = t_ef_inv_new
 
+        print ("t_ef "+ str(t_ef))
         return t_ef, align
 
 
@@ -68,14 +69,14 @@ class BerkeleyAligner():
         t_ef_new = defaultdict(lambda: defaultdict(lambda: 0.0))
         t_ef_inv_new = defaultdict(lambda: defaultdict(lambda: 0.0))
         total_f = defaultdict(float)
-        for e in t_ef:
-            for f in t_ef[e]:
-                comp = t_ef_inv[f][e]
-                print("comp is "+ str(comp))
-                print("this is "+ str(t_ef[e][f]))
-                t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
-                print("new is "+ str(t_ef_new[e][f]))
-                total_f[f] += t_ef_new[e][f]
+        #for e in t_ef:
+        #    for f in t_ef[e]:
+        #        comp = t_ef_inv[f][e]
+        #        print("comp is "+ str(comp))
+        #        print("this is "+ str(t_ef[e][f]))
+        #        t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
+        #        print("new is "+ str(t_ef_new[e][f]))
+        #        total_f[f] += t_ef_new[e][f]
         #for e in t_ef:
         #    for f in t_ef[e]:
         #        t_ef_new[e][f] = t_ef_new[e][f]/total_f[f]
@@ -115,7 +116,7 @@ class BerkeleyAligner():
                 for j in range(1, l_e+1):
                     align[i][j][l_e][l_f] = initial_value
 
-        init_prob = 1.0
+        init_prob = 1.0 / l_e
         # Create the translation model with initial probability
         t_ef = defaultdict(lambda: defaultdict(lambda: init_prob))
         return t_ef, align
