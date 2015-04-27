@@ -58,9 +58,9 @@ class BerkeleyAligner():
             t_ef_inv_new, align_inv_new = self.agree(t_ef_inv, t_ef, align_inv, align)
             align = align_new
             align_inv = align_inv_new
-            #t_ef = t_ef_new
-            #t_ef_inv = t_ef_inv_new
-            print ("t_ef "+ str(t_ef))
+            t_ef = t_ef_new
+            t_ef_inv = t_ef_inv_new
+            #print ("t_ef "+ str(t_ef))
         
         return t_ef, align
 
@@ -68,18 +68,18 @@ class BerkeleyAligner():
     def agree(self, t_ef, t_ef_inv, align, align_inv):
         t_ef_new = defaultdict(lambda: defaultdict(lambda: 0.0))
         t_ef_inv_new = defaultdict(lambda: defaultdict(lambda: 0.0))
-        total_f = defaultdict(float)
-        #for e in t_ef:
-        #    for f in t_ef[e]:
-        #        comp = t_ef_inv[f][e]
-        #        print("comp is "+ str(comp))
-        #        print("this is "+ str(t_ef[e][f]))
-        #        t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
-        #        print("new is "+ str(t_ef_new[e][f]))
-        #        total_f[f] += t_ef_new[e][f]
-        #for e in t_ef:
-        #    for f in t_ef[e]:
-        #        t_ef_new[e][f] = t_ef_new[e][f]/total_f[f]
+        total_f = defaultdict(lambda: 0.0)
+        for e in t_ef:
+            for f in t_ef[e]:
+                comp = t_ef_inv[f][e]
+                print("comp is "+ str(comp))
+                print("this is "+ str(t_ef[e][f]))
+                t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
+                print("new is "+ str(t_ef_new[e][f]))
+                total_f[f] += t_ef_new[e][f]
+        for e in t_ef:
+            for f in t_ef[e]:
+                t_ef_new[e][f] = t_ef_new[e][f]/total_f[f]
 
 
         align_new = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0))))
