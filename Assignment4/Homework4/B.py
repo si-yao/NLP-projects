@@ -54,26 +54,28 @@ class BerkeleyAligner():
             en_vocab.add(None)
             t_ef_inv, align_inv = self.EMIteration(t_ef_inv, align_inv, fr_vocab, en_vocab, aligned_sents_inv)
             en_vocab.remove(None)
-            align_new = self.agree(align, align_inv)
-            align_inv_new = self.agree(align_inv, align)
+            t_ef_new, align_new = self.agree(t_ef, t_ef_inv, align, align_inv)
+            t_ef_inv_new, align_inv_new = self.agree(t_ef_inv, t_ef, align_inv, align)
             align = align_new
             align_inv = align_inv_new
+            t_ef = t_ef_new
+            t_ef_inv = t_ef_inv_new
 
         return t_ef, align
 
 
-    def agree(self, align, align_inv):
-        #t_ef_new = defaultdict(lambda: defaultdict(lambda: 0.0))
-        #t_ef_inv_new = defaultdict(lambda: defaultdict(lambda: 0.0))
-        #total_f = defaultdict(float)
-        #for e in t_ef:
-        #    for f in t_ef[e]:
-        #        comp = t_ef_inv[f][e]
-        #        t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
-        #        total_f[f] += t_ef_new[e][f]
-        #for e in t_ef_new:
-        #    for f in t_ef_new[e]:
-        #        t_ef_new[e][f] = t_ef_new[e][f]/total_f[f]
+    def agree(self, t_ef, t_ef_inv, align, align_inv):
+        t_ef_new = defaultdict(lambda: defaultdict(lambda: 0.0))
+        t_ef_inv_new = defaultdict(lambda: defaultdict(lambda: 0.0))
+        total_f = defaultdict(float)
+        for e in t_ef:
+            for f in t_ef[e]:
+                comp = t_ef_inv[f][e]
+                t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
+                total_f[f] += t_ef_new[e][f]
+        for e in t_ef:
+            for f in t_ef[e]:
+                t_ef_new[e][f] = t_ef_new[e][f]/total_f[f]
 
 
         align_new = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0))))
@@ -90,7 +92,7 @@ class BerkeleyAligner():
                 for l_e in align[f_i][e_i]:
                     for l_f in align[f_i][e_i][l_e]:
                         align_new[f_i][e_i][l_e][l_f] /= total_align[e_i][l_e][l_f]
-        return align_new
+        return t_ef_new, align_new
 
 
     def initParam(self, align_sents):
