@@ -73,9 +73,9 @@ class BerkeleyAligner():
                 comp = t_ef_inv[f][e]
                 t_ef_new[e][f] = (t_ef[e][f]+comp)/2.0
                 total_f[f] += t_ef_new[e][f]
-        for e in t_ef:
-            for f in t_ef[e]:
-                t_ef_new[e][f] = t_ef_new[e][f]/total_f[f]
+        #for e in t_ef:
+        #    for f in t_ef[e]:
+        #        t_ef_new[e][f] = t_ef_new[e][f]/total_f[f]
 
 
         align_new = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0.0))))
