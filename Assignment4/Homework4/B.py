@@ -212,4 +212,4 @@ def main(aligned_sents):
     print ('---------------------------')
     print('Average AER: {0:.3f}\n'.format(avg_aer))
 
-    compare(aligned_sents, ba)
+    #compare(aligned_sents, ba)

@@ -73,5 +73,5 @@ def main(aligned_sents):
     print ('---------------------------')
     print('Average AER: {0:.3f}\n'.format(avg_aer))
 
-    compare(aligned_sents, ibm1, ibm2);
+    #compare(aligned_sents, ibm1, ibm2);
     
