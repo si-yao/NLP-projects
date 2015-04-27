@@ -58,10 +58,10 @@ class BerkeleyAligner():
             t_ef_inv_new, align_inv_new = self.agree(t_ef_inv, t_ef, align_inv, align)
             align = align_new
             align_inv = align_inv_new
-            t_ef = t_ef_new
-            t_ef_inv = t_ef_inv_new
-
-        print ("t_ef "+ str(t_ef))
+            #t_ef = t_ef_new
+            #t_ef_inv = t_ef_inv_new
+            print ("t_ef "+ str(t_ef))
+        
         return t_ef, align
 
 
